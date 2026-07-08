@@ -49,10 +49,11 @@ sass --watch scss/main.scss css/main.css              # durante o trabalho
   abrem o WhatsApp.
 - Preferências (cookies, contraste, tamanho de fonte) ficam no `localStorage`
   do visitante.
-- **Widgets de terceiros são opt‑in:** avaliações do Google e feed do Instagram
-  (Elfsight) só carregam após “Aceitar todos” no aviso de cookies ou “Ativar”
-  no próprio painel. O mapa continua click‑to‑load. O VLibras (gov.br) carrega
-  sempre, por ser recurso público de acessibilidade.
+- **Widgets de terceiros:** avaliações do Google e feed do Instagram (Elfsight)
+  usam o embed oficial fixo no HTML e aparecem por padrão. Quem clicar
+  “Rejeitar não essenciais” navega com essas seções ocultas — e pode mudar de
+  ideia pelo botão “Cookies” do rodapé. O mapa continua click‑to‑load; o
+  VLibras (gov.br) carrega sempre, por ser recurso público de acessibilidade.
 
 ## Recursos implementados
 

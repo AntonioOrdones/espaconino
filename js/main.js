@@ -200,34 +200,25 @@
   }
 
   /* ── 12 · Consentimento (LGPD) + conteúdo de terceiros ───────────────────── */
-  let elfsightAtivo = false;
-  const carregarWidgets = () => {
-    if (elfsightAtivo) return;
-    elfsightAtivo = true;
-    const s = document.createElement('script');
-    s.src = 'https://elfsightcdn.com/platform.js';
-    s.async = true;
-    document.body.appendChild(s);
-  };
-
+  // O script da Elfsight (Google Reviews + Instagram) vem fixo no HTML, como no
+  // embed oficial — os widgets aparecem por padrão, até sem JavaScript. Aqui só
+  // respeitamos a escolha de quem rejeitar, ocultando as seções de terceiros.
+  // Chave versionada (v2) para não herdar rejeições feitas durante os testes.
   {
+    const CHAVE  = 'nino-consent-v2';
     const barra  = $('#cookiebar');
     const secoes = ['#depoimentos', '#instagram'].map(sel => $(sel)).filter(Boolean);
 
-    const aplicar = escolha => {
-      const rejeitou = escolha === 'essential';
-      secoes.forEach(sec => sec.toggleAttribute('hidden', rejeitou));
-      if (!rejeitou) carregarWidgets();
-    };
+    const aplicar = escolha =>
+      secoes.forEach(sec => sec.toggleAttribute('hidden', escolha === 'essential'));
 
     const decidir = escolha => {
-      gravarPref('nino-consent', escolha);
+      gravarPref(CHAVE, escolha);
       barra?.setAttribute('hidden', '');
       aplicar(escolha);
     };
 
-    // Os widgets são exibidos por padrão; quem rejeitar navega sem terceiros.
-    const salvo = lerPref('nino-consent');
+    const salvo = lerPref(CHAVE);
     aplicar(salvo || 'all');
     if (!salvo) barra?.removeAttribute('hidden');
 
