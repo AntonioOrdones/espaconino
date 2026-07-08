@@ -57,13 +57,24 @@ sass --watch scss/main.scss css/main.css              # durante o trabalho
 ## Recursos implementados
 
 Equipe (cards com registro e redes) · galeria com lightbox (fotos + vídeo) ·
-muro com os 51 logos de convênios (marquee em tons de cinza → cor no hover,
-com fallback tipográfico se algum logo externo sair do ar) · busca de convênios ·
+muro com os 51 logos de convênios (marquee sem cartões, altura uniforme de
+54 px, tons de cinza → cor no hover, fallback tipográfico se algum logo cair) · busca de convênios ·
 chatbot **Nino** (roteiro local: especialidades, convênio, endereço, horários,
 valores, agendamento em 2 passos → WhatsApp) · feedback via diálogo → WhatsApp ·
 boletim (aponte `data-endpoint` do `#form-boletim` para Mailchimp/Brevo; sem
 endpoint, o pedido chega por WhatsApp) · Trabalhe conosco · botão voltar ao topo ·
 A−/A+/alto contraste · VLibras · aviso de cookies sem dark pattern.
+
+## Como testar direito
+
+Os plugins externos — **VLibras** e **Elfsight** — exigem origem `http(s)` e
+não iniciam abrindo o arquivo direto do disco (`file://`). Para testar tudo:
+
+```bash
+cd espaco-nino && python3 -m http.server 8080   # depois abra http://localhost:8080
+```
+
+(ou `npx serve`, ou publique num host). O restante do site funciona até em `file://`.
 
 ## Pendências antes de publicar
 
