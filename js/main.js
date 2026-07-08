@@ -521,4 +521,8 @@
       window.setTimeout(() => responder(texto), reduzirMovimento ? 0 : 350);
     });
   }
+  /* ── 17 · Carrossel de convênios: anima só com as larguras estáveis ─────── */
+  window.addEventListener('load', () =>
+    $$('.logo-wall').forEach(w => w.classList.add('is-ready'))
+  );
 })();

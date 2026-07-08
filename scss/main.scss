@@ -1781,7 +1781,10 @@ html.js .reveal {
     padding-right: 2.6rem; // = gap, para o loop emendar sem salto
     flex: none;
     animation: marquee 80s linear infinite;
+    animation-play-state: paused; // roda só após o load (larguras estáveis)
   }
+
+  &.is-ready &__track { animation-play-state: running; }
 
   &__note {
     margin: 0.9rem 0 0;
