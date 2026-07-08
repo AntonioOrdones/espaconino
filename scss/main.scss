@@ -595,7 +595,7 @@ strong { color: var(--ink); font-weight: 700; }
     place-items: center;
     min-height: 480px;
 
-    @include mq($bp-md) { min-height: 0; margin-top: 0.5rem; }
+    @include mq($bp-md) { min-height: min(88vw, 400px); margin-top: 0; }
   }
 }
 
@@ -1802,7 +1802,8 @@ html.js .reveal {
   transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
 
   img {
-    max-width: 100%; max-height: 100%;
+    display: block;
+    width: 100%; height: 100%;
     object-fit: contain;
     filter: grayscale(1) contrast(0.9);
     opacity: 0.72;
@@ -1834,11 +1835,6 @@ html.js .reveal {
     }
   }
 }
-
-// Convênios agora sobre papel → busca e chips em branco
-.plans .search,
-.plans__list li { background: var(--white); }
-.plans__list li:hover { background: var(--rio-tint); }
 
 // ─── 27 · Galeria ────────────────────────────────────────────────────────────
 .gallery {
@@ -2148,7 +2144,7 @@ html.js .reveal {
 .nino {
   position: fixed;
   right: 20px; bottom: 92px;
-  z-index: 82;
+  z-index: 110; // acima do cabeçalho fixo (90)
 
   &__fab {
     display: grid;
@@ -2174,6 +2170,9 @@ html.js .reveal {
     position: absolute;
     right: 0; bottom: calc(100% + 14px);
     width: min(370px, calc(100vw - 40px));
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100dvh - 120px);
     background: var(--white);
     border: 1px solid var(--hairline);
     border-radius: 22px;
@@ -2222,7 +2221,9 @@ html.js .reveal {
     display: flex;
     flex-direction: column;
     gap: 0.55rem;
-    height: 300px;
+    flex: 1 1 auto;
+    min-height: 200px;
+    max-height: 320px;
     padding: 1rem;
     overflow-y: auto;
     background: var(--paper);
@@ -2514,4 +2515,43 @@ html.hc {
 
   .container { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; justify-content: space-between; }
   a { color: var(--body); text-decoration: underline; text-underline-offset: 2px; &:hover { color: var(--ink); } }
+}
+
+// ─── 38 · Correção global: [hidden] vence qualquer display de componente ────
+[hidden] { display: none !important; }
+
+// ─── 39 · Quem somos · Missão, Visão e Valores ───────────────────────────────
+.mvv {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.4rem;
+
+  @include mq($bp-md) { grid-template-columns: 1fr; }
+
+  &__card {
+    background: var(--white);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius);
+    padding: 1.7rem 1.6rem 1.8rem;
+    transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+
+    &:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+
+    h3 { font-size: 1.12rem; margin-bottom: 0.4em; }
+    p  { font-size: 0.93rem; }
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 48px; height: 48px;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+
+    .ic { width: 22px; height: 22px; }
+
+    &--rio  { background: var(--rio-tint);  color: var(--rio-deep); }
+    &--sol  { background: var(--sol-tint);  color: var(--sol-deep); }
+    &--mata { background: var(--mata-tint); color: var(--mata); }
+  }
 }

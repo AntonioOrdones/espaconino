@@ -45,6 +45,9 @@
   <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"/></symbol>
   <symbol id="i-in" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 11v5M8 8v.01M12 16v-3a2 2 0 1 1 4 0v3"/></symbol>
   <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 10 14M21 3l-7 18-4-7-7-4z"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.8-6.5 10-6.5S22 12 22 12s-3.8 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
   <!-- Avatar do Nino, assistente virtual -->
   <symbol id="nino-avatar" viewBox="0 0 96 96">
     <circle cx="48" cy="48" r="48" fill="var(--rio-tint,#E7F4FB)"/>
@@ -132,6 +135,7 @@
     <nav aria-label="Navegação principal (celular)">
       <ul>
         <li><a href="#especialidades">Especialidades</a></li>
+        <li><a href="#quem-somos">Quem somos</a></li>
         <li><a href="#equipe">Equipe</a></li>
         <li><a href="#jornada">Como funciona</a></li>
         <li><a href="#convenios">Convênios</a></li>
@@ -179,11 +183,6 @@
           </a>
           <a class="btn btn--ghost btn--lg" href="#convenios">Ver convênios aceitos</a>
         </div>
-        <ul class="hero__proof reveal" style="--d:4">
-          <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg> 7 especialidades integradas</li>
-          <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg> Mais de 50 convênios</li>
-          <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg> Método Denver e ABA</li>
-        </ul>
       </div>
 
       <!-- Assinatura visual: órbita inspirada na geometria circular da marca -->
@@ -198,27 +197,6 @@
           <span class="orbit__spin orbit__spin--d"><i class="orbit__dot orbit__dot--coral"></i></span>
         </div>
 
-        <article class="hero-card">
-          <header class="hero-card__head">
-            <img src="assets/marca-icone.webp" alt="" width="30" height="30">
-            <h2>Primeiro contato</h2>
-          </header>
-          <p class="hero-card__sub">Para agilizar o retorno da equipe, informe:</p>
-          <ul class="hero-card__list">
-            <li><i class="dot dot--rio" aria-hidden="true"></i> A idade da criança ou adolescente</li>
-            <li><i class="dot dot--mata" aria-hidden="true"></i> A principal demanda ou suspeita</li>
-            <li><i class="dot dot--sol" aria-hidden="true"></i> O convênio, se houver</li>
-          </ul>
-          <hr class="hero-card__rule">
-          <p class="hero-card__note">
-            <svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg>
-            Resposta em horário comercial — seg. a sex., 8h às 18h.
-          </p>
-          <a class="btn btn--primary btn--block" href="https://wa.me/5561991557014?text=Ol%C3%A1!%20Gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20o%20primeiro%20atendimento." target="_blank" rel="noopener">
-            Falar com a equipe
-            <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg>
-          </a>
-        </article>
       </div>
     </div>
   </section>
@@ -356,10 +334,39 @@
     </div>
   </section>
 
+  <!-- ══════════════════ QUEM SOMOS ══════════════════ -->
+  <section class="section about" id="quem-somos" aria-labelledby="sobre-titulo">
+    <div class="container">
+      <header class="section__head reveal">
+        <p class="eyebrow"><span class="eyebrow__dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span> Quem somos</p>
+        <h2 class="section__title" id="sobre-titulo">Um espaço feito de <em>propósito</em>.</h2>
+        <p class="section__lead">O Espaço Niño nasceu em Águas Claras para reunir, em um só lugar, as terapias de que crianças e adolescentes neurodivergentes precisam — com técnica, afeto e uma equipe que conversa entre si. Aqui, cada plano terapêutico é único, e a família participa de todas as decisões.</p>
+      </header>
+
+      <ul class="mvv">
+        <li class="mvv__card reveal">
+          <span class="mvv__icon mvv__icon--rio" aria-hidden="true"><svg class="ic"><use href="#i-target"/></svg></span>
+          <h3>Missão</h3>
+          <p>Promover o desenvolvimento de crianças e adolescentes por meio de terapias integradas e baseadas em evidências, acolhendo cada família com respeito à sua história.</p>
+        </li>
+        <li class="mvv__card reveal" style="--d:1">
+          <span class="mvv__icon mvv__icon--sol" aria-hidden="true"><svg class="ic"><use href="#i-eye"/></svg></span>
+          <h3>Visão</h3>
+          <p>Ser referência no Distrito Federal em cuidado multiprofissional infantojuvenil, reconhecida pela ética, pela qualidade técnica e pelo vínculo com as famílias.</p>
+        </li>
+        <li class="mvv__card reveal" style="--d:2">
+          <span class="mvv__icon mvv__icon--mata" aria-hidden="true"><svg class="ic"><use href="#i-heart"/></svg></span>
+          <h3>Valores</h3>
+          <p>Acolhimento genuíno · prática baseada em evidências · trabalho integrado · respeito à neurodiversidade · parceria com a família e a escola · ética em cada detalhe.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
   <!-- ══════════════════ EQUIPE ══════════════════ -->
   <!-- ▼ EXEMPLO: os quatro perfis abaixo são fictícios, apenas para diagramação.
        Substitua nome, foto, registro, minibio e redes de cada profissional. ▼ -->
-  <section class="section team" id="equipe" aria-labelledby="equipe-titulo">
+  <section class="section section--white team" id="equipe" aria-labelledby="equipe-titulo">
     <div class="container">
       <header class="section__head reveal">
         <p class="eyebrow"><span class="eyebrow__dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span> Quem cuida</p>
@@ -425,7 +432,7 @@
   </section>
 
   <!-- ══════════════════ JORNADA ══════════════════ -->
-  <section class="section section--white journey" id="jornada" aria-labelledby="jornada-titulo">
+  <section class="section journey" id="jornada" aria-labelledby="jornada-titulo">
     <div class="container">
       <header class="section__head reveal">
         <p class="eyebrow"><span class="eyebrow__dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span> Como funciona</p>
@@ -459,7 +466,7 @@
   </section>
 
   <!-- ══════════════════ CONVÊNIOS ══════════════════ -->
-  <section class="section plans" id="convenios" aria-labelledby="conv-titulo">
+  <section class="section section--white plans" id="convenios" aria-labelledby="conv-titulo">
     <div class="container">
       <header class="section__head reveal">
         <p class="eyebrow"><span class="eyebrow__dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span> Convênios</p>
@@ -628,7 +635,7 @@
   <!-- ══════════════════ GALERIA ══════════════════ -->
   <!-- ▼ SUBSTITUIR: imagens e vídeo de banco (ilustrativos), só para ver o layout.
        Troque pelos registros reais do espaço. ▼ -->
-  <section class="section section--white gallery" id="galeria" aria-labelledby="galeria-titulo">
+  <section class="section gallery" id="galeria" aria-labelledby="galeria-titulo">
     <div class="container">
       <header class="section__head reveal">
         <p class="eyebrow"><span class="eyebrow__dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span> O espaço</p>
@@ -692,18 +699,9 @@
         <h2 class="section__title" id="dep-titulo">O que as famílias <em>contam</em>.</h2>
       </header>
 
+      <!-- Elfsight Google Reviews -->
       <div class="widget-panel reveal" data-widget="google">
-        <div class="widget-panel__gate" data-gate>
-          <svg class="ic widget-panel__ic" aria-hidden="true"><use href="#i-star"/></svg>
-          <h3>Avaliações reais, direto do Google</h3>
-          <p>O widget de avaliações usa cookies de terceiros (Elfsight/Google). Ative para vê‑las aqui mesmo — ou leia no perfil da clínica.</p>
-          <div class="widget-panel__actions">
-            <button type="button" class="btn btn--primary btn--sm" data-consent-open>Ativar avaliações</button>
-            <a class="btn btn--ghost btn--sm" href="https://maps.app.goo.gl/S23awZM4eRqJVQJq6" target="_blank" rel="noopener">Ver no Google <svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
-          </div>
-        </div>
-        <!-- Elfsight Google Reviews -->
-        <div class="elfsight-app-23de462b-ae38-4aac-95c6-f3b2e4cb36d0" data-elfsight-app-lazy hidden></div>
+        <div class="elfsight-app-23de462b-ae38-4aac-95c6-f3b2e4cb36d0" data-elfsight-app-lazy></div>
       </div>
     </div>
   </section>
@@ -716,18 +714,9 @@
         <h2 class="section__title" id="insta-titulo">Acompanhe o Espaço Niño <em>de perto</em>.</h2>
       </header>
 
+      <!-- Elfsight Instagram Feed -->
       <div class="widget-panel widget-panel--flat reveal" data-widget="instagram">
-        <div class="widget-panel__gate" data-gate>
-          <svg class="ic widget-panel__ic" aria-hidden="true"><use href="#i-ig"/></svg>
-          <h3>Feed do @espaconinoterapias</h3>
-          <p>O feed usa cookies de terceiros (Elfsight/Instagram). Ative para ver as publicações aqui — ou abra direto no aplicativo.</p>
-          <div class="widget-panel__actions">
-            <button type="button" class="btn btn--primary btn--sm" data-consent-open>Ativar feed</button>
-            <a class="btn btn--ghost btn--sm" href="https://www.instagram.com/espaconinoterapias" target="_blank" rel="noopener">Abrir no Instagram <svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
-          </div>
-        </div>
-        <!-- Elfsight Instagram Feed -->
-        <div class="elfsight-app-27adea07-24c9-475b-8dad-760fa3506282" data-elfsight-app-lazy hidden></div>
+        <div class="elfsight-app-27adea07-24c9-475b-8dad-760fa3506282" data-elfsight-app-lazy></div>
       </div>
     </div>
   </section>
@@ -901,7 +890,7 @@
     <nav class="footer__col" aria-label="Navegação do rodapé">
       <h3>Navegação</h3>
       <ul>
-        <li><a href="#especialidades">Especialidades</a></li>
+        <li><a href="#quem-somos">Quem somos</a></li>
         <li><a href="#equipe">Equipe</a></li>
         <li><a href="#jornada">Como funciona</a></li>
         <li><a href="#convenios">Convênios</a></li>
@@ -937,7 +926,7 @@
     <div class="container footer__bottom-inner">
       <!-- TODO: incluir o CNPJ e apontar os links para as páginas de Privacidade e Termos -->
       <p>© <span id="ano-atual">2026</span> Espaço Niño · Todos os direitos reservados</p>
-      <p class="footer__legal"><a href="privacidade.html">Privacidade</a> · <a href="termos.html">Termos de Uso</a> · <a href="lgpd.html">LGPD</a> · <a href="acessibilidade.html">Acessibilidade</a></p>
+      <p class="footer__legal"><a href="privacidade.html">Privacidade</a> · <a href="termos.html">Termos de Uso</a> · <a href="lgpd.html">LGPD</a> · <a href="acessibilidade.html">Acessibilidade</a> · <button type="button" class="footer__feedback" data-cookie-prefs>Cookies</button></p>
     </div>
   </div>
 </footer>
@@ -1012,9 +1001,9 @@
 
 <!-- Aviso de cookies (LGPD) -->
 <div class="cookiebar" id="cookiebar" role="region" aria-label="Preferências de privacidade" hidden>
-  <p><strong>Privacidade em primeiro lugar.</strong> Usamos só o essencial. Recursos de terceiros — avaliações do Google, feed do Instagram e mapa — carregam apenas com a sua permissão. <a href="privacidade.html">Saiba mais</a>.</p>
+  <p><strong>Cookies e conteúdo de terceiros.</strong> Além do essencial, exibimos avaliações do Google e o feed do Instagram, que usam cookies próprios. Você pode rejeitá‑los agora ou mudar de ideia depois em “Cookies”, no rodapé. <a href="privacidade.html">Política de privacidade</a>.</p>
   <div class="cookiebar__actions">
-    <button type="button" class="btn btn--ghost btn--sm" id="ck-essenciais">Somente essenciais</button>
+    <button type="button" class="btn btn--primary btn--sm" id="ck-essenciais">Rejeitar não essenciais</button>
     <button type="button" class="btn btn--primary btn--sm" id="ck-todos">Aceitar todos</button>
   </div>
 </div>

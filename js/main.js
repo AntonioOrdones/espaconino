@@ -199,13 +199,11 @@
     btnHc?.addEventListener('click', () => aplicarHc(!raiz.classList.contains('hc')));
   }
 
-  /* ── 12 · Consentimento (LGPD) + widgets Elfsight ────────────────────────── */
+  /* ── 12 · Consentimento (LGPD) + conteúdo de terceiros ───────────────────── */
   let elfsightAtivo = false;
   const carregarWidgets = () => {
     if (elfsightAtivo) return;
     elfsightAtivo = true;
-    $$('[class*="elfsight-app-"]').forEach(el => { el.hidden = false; });
-    $$('[data-gate]').forEach(g => { g.hidden = true; });
     const s = document.createElement('script');
     s.src = 'https://elfsightcdn.com/platform.js';
     s.async = true;
@@ -213,21 +211,33 @@
   };
 
   {
-    const barra = $('#cookiebar');
+    const barra  = $('#cookiebar');
+    const secoes = ['#depoimentos', '#instagram'].map(sel => $(sel)).filter(Boolean);
+
+    const aplicar = escolha => {
+      const rejeitou = escolha === 'essential';
+      secoes.forEach(sec => sec.toggleAttribute('hidden', rejeitou));
+      if (!rejeitou) carregarWidgets();
+    };
+
     const decidir = escolha => {
       gravarPref('nino-consent', escolha);
       barra?.setAttribute('hidden', '');
-      if (escolha === 'all') carregarWidgets();
+      aplicar(escolha);
     };
 
+    // Os widgets são exibidos por padrão; quem rejeitar navega sem terceiros.
     const salvo = lerPref('nino-consent');
-    if (salvo === 'all') carregarWidgets();
-    else if (!salvo) barra?.removeAttribute('hidden');
+    aplicar(salvo || 'all');
+    if (!salvo) barra?.removeAttribute('hidden');
 
     $('#ck-todos')     ?.addEventListener('click', () => decidir('all'));
     $('#ck-essenciais')?.addEventListener('click', () => decidir('essential'));
-    // “Ativar” dentro dos painéis = consentir com terceiros
-    $$('[data-consent-open]').forEach(b => b.addEventListener('click', () => decidir('all')));
+
+    // Revogação sempre disponível: “Cookies”, no rodapé, reabre o aviso
+    $$('[data-cookie-prefs]').forEach(b =>
+      b.addEventListener('click', () => barra?.removeAttribute('hidden'))
+    );
   }
 
   /* ── 13 · Galeria: lightbox ──────────────────────────────────────────────── */
