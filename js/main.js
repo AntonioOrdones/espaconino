@@ -9,7 +9,59 @@
   const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
   const WHATSAPP = '5561991557014';
+  const GA4_ID = ''; // Preencha com G-XXXXXXXXXX quando a propriedade GA4 estiver criada.
   const reduzirMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const track = (nome, parametros = {}) => {
+    document.dispatchEvent(new CustomEvent('nino:analytics', { detail: { nome, parametros } }));
+    if (typeof window.gtag === 'function') window.gtag('event', nome, parametros);
+  };
+  window.NinoAnalytics = { track };
+
+  let elfsightPromise;
+  const carregarElfsight = () => {
+    $('.elfsight-app-23de462b-ae38-4aac-95c6-f3b2e4cb36d0, .elfsight-app-27adea07-24c9-475b-8dad-760fa3506282').forEach(el => { el.hidden = false; });
+    if (document.querySelector('script[data-nino-elfsight]')) return elfsightPromise || Promise.resolve();
+    elfsightPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://elfsightcdn.com/platform.js';
+      script.async = true;
+      script.dataset.ninoElfsight = '1';
+      script.addEventListener('load', resolve, { once: true });
+      script.addEventListener('error', reject, { once: true });
+      document.head.appendChild(script);
+    });
+    return elfsightPromise;
+  };
+
+  let ga4Carregado = false;
+  const carregarGA4 = () => {
+    if (ga4Carregado || !/^G-[A-Z0-9]+$/i.test(GA4_ID)) return;
+    ga4Carregado = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
+    window.gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA4_ID);
+    script.addEventListener('load', () => {
+      window.gtag('consent', 'update', { analytics_storage: 'granted' });
+      window.gtag('js', new Date());
+      window.gtag('config', GA4_ID, { anonymize_ip: true });
+    }, { once: true });
+    document.head.appendChild(script);
+  };
+
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a');
+    if (!a) return;
+    const href = a.getAttribute('href') || '';
+    if (/wa\.me\//i.test(href)) track('click_whatsapp', { link_text: (a.textContent || '').trim().slice(0, 80) });
+    if (/^tel:/i.test(href)) track('click_phone');
+    if (/maps\.app\.goo\.gl|google\.[^/]+\/maps/i.test(href)) track('click_map');
+    const m = href.match(/servicos\/([^/?#]+)\/?/i);
+    if (m) track('service_cta_click', { service_slug: m[1] });
+  });
 
   /* ── 1 · Cabeçalho: sombra ao rolar ──────────────────────────────────────── */
   const header = $('.site-header');
@@ -98,6 +150,7 @@
       contador.textContent = rotulo(visiveis);
       vazio.hidden = visiveis !== 0;
     });
+    busca.addEventListener('change', () => track('insurance_search', { query_length: busca.value.trim().length }));
   }
 
   function normalizar(texto) {
@@ -116,6 +169,10 @@
   const form = $('#form-contato');
   if (form) {
     const erro = $('#form-erro');
+    let iniciou = false;
+    form.addEventListener('focusin', () => {
+      if (!iniciou) { iniciou = true; track('form_start', { form_id: 'contato' }); }
+    });
 
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -137,6 +194,8 @@
       if (convenio) texto += `\nConvênio: ${convenio}.`;
       texto += `\n\n${msg}`;
 
+      track('form_submit', { form_id: 'contato' });
+      track('generate_lead', { source: 'form_contato' });
       window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`, '_blank', 'noopener');
     });
   }
@@ -153,6 +212,7 @@
       iframe.allowFullscreen = true;
       iframe.referrerPolicy = 'strict-origin-when-cross-origin';
       mapa.replaceChildren(iframe);
+      track('click_map', { source: 'map_embed_button' });
     });
   }
 
@@ -200,17 +260,26 @@
   }
 
   /* ── 12 · Consentimento (LGPD) + conteúdo de terceiros ───────────────────── */
-  // O script da Elfsight (Google Reviews + Instagram) vem fixo no HTML, como no
-  // embed oficial — os widgets aparecem por padrão, até sem JavaScript. Aqui só
-  // respeitamos a escolha de quem rejeitar, ocultando as seções de terceiros.
-  // Chave versionada (v2) para não herdar rejeições feitas durante os testes.
   {
-    const CHAVE  = 'nino-consent-v2';
-    const barra  = $('#cookiebar');
-    const secoes = ['#depoimentos', '#instagram'].map(sel => $(sel)).filter(Boolean);
+    const CHAVE = 'nino-consent-v3';
+    const barra = $('#cookiebar');
+    const apps = $$('.elfsight-app-23de462b-ae38-4aac-95c6-f3b2e4cb36d0, .elfsight-app-27adea07-24c9-475b-8dad-760fa3506282');
+    const gates = $$('[data-third-party-gate]');
 
-    const aplicar = escolha =>
-      secoes.forEach(sec => sec.toggleAttribute('hidden', escolha === 'essential'));
+    const aplicar = escolha => {
+      const permitido = escolha === 'all';
+      gates.forEach(g => { g.hidden = permitido; });
+      apps.forEach(app => { app.hidden = !permitido; });
+      if (permitido) {
+        carregarElfsight().catch(() => {
+          gates.forEach(g => { g.hidden = false; });
+          apps.forEach(app => { app.hidden = true; });
+        });
+        carregarGA4();
+      } else if (typeof window.gtag === 'function') {
+        window.gtag('consent', 'update', { analytics_storage: 'denied' });
+      }
+    };
 
     const decidir = escolha => {
       gravarPref(CHAVE, escolha);
@@ -219,16 +288,13 @@
     };
 
     const salvo = lerPref(CHAVE);
-    aplicar(salvo || 'all');
+    aplicar(salvo || 'essential');
     if (!salvo) barra?.removeAttribute('hidden');
 
-    $('#ck-todos')     ?.addEventListener('click', () => decidir('all'));
+    $('#ck-todos')?.addEventListener('click', () => decidir('all'));
     $('#ck-essenciais')?.addEventListener('click', () => decidir('essential'));
-
-    // Revogação sempre disponível: “Cookies”, no rodapé, reabre o aviso
-    $$('[data-cookie-prefs]').forEach(b =>
-      b.addEventListener('click', () => barra?.removeAttribute('hidden'))
-    );
+    $$('[data-consent-enable]').forEach(b => b.addEventListener('click', () => decidir('all')));
+    $$('[data-cookie-prefs]').forEach(b => b.addEventListener('click', () => barra?.removeAttribute('hidden')));
   }
 
   /* ── 13 · Galeria: lightbox ──────────────────────────────────────────────── */
