@@ -424,7 +424,7 @@
       if (/(agendar|agendamento|marcar|consulta|avaliacao|vaga)/.test(t)) { iniciarAgendamento(); return; }
 
       if (/(especialidade|terapia|fono|psicolog|ocupacional|psicoped|psicomotr|fisioter|denver|aba\b|tea\b|autis|tdah)/.test(t)) {
-        falar('Trabalhamos com <strong>7 especialidades integradas</strong>: Psicologia (Denver e ABA), Fonoaudiologia, Terapia Ocupacional, Psicopedagogia, Psicomotricidade e Fisioterapia — sempre com plano individual e reavaliações. Veja os detalhes em <a href="#especialidades">Especialidades</a> e o passo a passo em <a href="#jornada">Como funciona</a>.');
+        falar('Trabalhamos com <strong>6 especialidades integradas</strong>: Psicologia (Denver e ABA), Fonoaudiologia, Terapia Ocupacional, Psicopedagogia, Psicomotricidade e Fisioterapia — sempre com plano individual e reavaliações. Veja os detalhes em <a href="servicos/">Serviços</a> e o passo a passo em <a href="#jornada">Como funciona</a>.');
         MENU(); return;
       }
 
@@ -454,7 +454,7 @@
       }
 
       if (/(idade|anos|bebe|adolescente|crianca)/.test(t)) {
-        falar('Atendemos do <strong>bebê ao adolescente (0 a 17 anos)</strong>, com salas e abordagens específicas por fase. Veja em <a href="#especialidades">Especialidades</a>.');
+        falar('Atendemos do <strong>bebê ao adolescente (0 a 17 anos)</strong>, com salas e abordagens específicas por fase. Veja em <a href="servicos/">Serviços</a>.');
         MENU(); return;
       }
 

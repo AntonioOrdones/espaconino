@@ -92,3 +92,38 @@ cd espaco-nino && python3 -m http.server 8080   # depois abra http://localhost:8
       `src` do `.logo-wall` para caminhos locais.
 - [ ] **Elfsight:** os widgets usam os IDs oficiais já fornecidos — basta manter
       os apps ativos no painel da Elfsight.
+
+
+## Arquitetura de serviços e SEO local (30/09/2026)
+
+Foram adicionadas páginas HTML indexáveis e com conteúdo próprio para:
+
+- `/servicos/avaliacao-inicial/`
+- `/servicos/terapia-ocupacional/`
+- `/servicos/fonoaudiologia/`
+- `/servicos/psicologia-infantil/`
+- `/servicos/psicopedagogia/`
+- `/servicos/` como página-hub.
+
+Cada página possui `title`, `meta description`, canonical, Open Graph, links internos,
+breadcrumbs e dados estruturados `Service` + `BreadcrumbList`. A home passou a apontar
+para essas páginas em links HTML rastreáveis; também foram incluídos `sitemap.xml` e
+`robots.txt`.
+
+### URL canônica usada
+
+O repositório está com GitHub Pages habilitado e não possui `CNAME`; por isso, os
+canonicals e o sitemap foram configurados para:
+
+`https://antonioordones.github.io/espaconino/`
+
+Se o site passar a usar domínio próprio, substitua esse prefixo nos HTMLs e em
+`sitemap.xml`/`robots.txt` antes da publicação. Em GitHub Pages de projeto, o arquivo
+`robots.txt` fica em `/espaconino/robots.txt`; para controle de rastreamento no nível
+do host, prefira domínio próprio ou uma configuração em que `robots.txt` seja servido
+na raiz do domínio.
+
+### Observação sobre a tecnologia
+
+O código atual deste repositório é HTML5 + Sass/CSS + JavaScript puro. Não há arquivos
+React nem etapa de build React no conteúdo atualmente versionado.
