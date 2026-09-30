@@ -69,3 +69,16 @@ Foram reutilizados apenas dados já existentes no repositório para informaçõe
 O repositório atualmente versionado é HTML5 + Sass/CSS + JavaScript puro. Não há arquivos React no projeto publicado no GitHub.
 
 Os arquivos `main.css` e `main.js` existentes na raiz são, na realidade, arquivos binários WebP duplicados e não são referenciados pela home. Eles foram mantidos sem alteração para não remover arquivos do projeto sem autorização. Os arquivos efetivamente usados pelo site são `css/main.css` e `js/main.js`.
+
+
+## Segunda rodada — boas práticas remanescentes (30/09/2026)
+
+- Criadas páginas próprias para Psicomotricidade e Fisioterapia.
+- Criada página pesquisável de convênios em `/convenios/`.
+- Atualizados links da home, hub, rodapés e navegação para as novas páginas.
+- Removido o carregamento de dezenas de logos externos de convênios na home.
+- Corrigido o consentimento: Elfsight só é injetado após autorização.
+- Adicionada instrumentação de eventos pronta para GA4 quando houver Measurement ID.
+- Corrigido o sitemap para listar apenas URLs indexáveis e incluídas as novas páginas.
+- Criado `404.html` personalizado.
+- Adicionada política de referrer nas principais páginas indexáveis e na Política de Privacidade.
