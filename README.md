@@ -50,16 +50,15 @@ sass --watch scss/main.scss css/main.css              # durante o trabalho
 - Preferências (cookies, contraste, tamanho de fonte) ficam no `localStorage`
   do visitante.
 - **Widgets de terceiros:** avaliações do Google e feed do Instagram (Elfsight)
-  usam o embed oficial fixo no HTML e aparecem por padrão. Quem clicar
-  “Rejeitar não essenciais” navega com essas seções ocultas — e pode mudar de
-  ideia pelo botão “Cookies” do rodapé. O mapa continua click‑to‑load; o
-  VLibras (gov.br) carrega sempre, por ser recurso público de acessibilidade.
+  só são carregados depois que o visitante autoriza conteúdo de terceiros.
+  Quem mantiver apenas o essencial não faz a chamada ao Elfsight. A preferência
+  pode ser revista pelo botão “Cookies” do rodapé. O mapa continua click-to-load;
+  o VLibras (gov.br) carrega sempre, por ser recurso público de acessibilidade.
 
 ## Recursos implementados
 
 Equipe (cards com registro e redes) · galeria com lightbox (fotos + vídeo) ·
-muro com os 51 logos de convênios (marquee sem cartões, altura uniforme de
-54 px, tons de cinza → cor no hover, fallback tipográfico se algum logo cair) · busca de convênios ·
+consulta pesquisável de 51 convênios em HTML, sem carregar dezenas de logos externos ·
 chatbot **Nino** (roteiro local: especialidades, convênio, endereço, horários,
 valores, agendamento em 2 passos → WhatsApp) · feedback via diálogo → WhatsApp ·
 boletim (aponte `data-endpoint` do `#form-boletim` para Mailchimp/Brevo; sem
@@ -87,9 +86,8 @@ cd espaco-nino && python3 -m http.server 8080   # depois abra http://localhost:8
 - [ ] **Boletim:** configurar o provedor de e‑mail em `data-endpoint`.
 - [ ] **CNPJ** no rodapé e na Política de Privacidade; **e‑mail do DPO** nas
       páginas de Privacidade e LGPD.
-- [ ] **Logos de convênios:** hoje vêm dos sites das operadoras (como no v85).
-      Recomendado: baixar os arquivos para `assets/convenios/` e trocar os
-      `src` do `.logo-wall` para caminhos locais.
+- [x] **Convênios:** a home deixou de carregar dezenas de logos externos;
+      a consulta textual permanece e ganhou página própria em `/convenios/`.
 - [ ] **Elfsight:** os widgets usam os IDs oficiais já fornecidos — basta manter
       os apps ativos no painel da Elfsight.
 
@@ -103,7 +101,10 @@ Foram adicionadas páginas HTML indexáveis e com conteúdo próprio para:
 - `/servicos/fonoaudiologia/`
 - `/servicos/psicologia-infantil/`
 - `/servicos/psicopedagogia/`
+- `/servicos/psicomotricidade/`
+- `/servicos/fisioterapia/`
 - `/servicos/` como página-hub.
+- `/convenios/` como página pesquisável de convênios e orientações.
 
 Cada página possui `title`, `meta description`, canonical, Open Graph, links internos,
 breadcrumbs e dados estruturados `Service` + `BreadcrumbList`. A home passou a apontar
@@ -127,3 +128,13 @@ na raiz do domínio.
 
 O código atual deste repositório é HTML5 + Sass/CSS + JavaScript puro. Não há arquivos
 React nem etapa de build React no conteúdo atualmente versionado.
+
+
+## Privacidade, medição e robustez (30/09/2026)
+
+- Elfsight (Google Reviews e Instagram) não é mais carregado antes da escolha do visitante. O script é injetado somente após consentimento.
+- Foi adicionada instrumentação para os eventos `click_whatsapp`, `click_phone`, `click_map`, `service_cta_click`, `insurance_search`, `form_start`, `form_submit` e `generate_lead`.
+- Para ativar GA4, preencha `GA4_ID` no início de `js/main.js` com o Measurement ID da propriedade (`G-...`). Sem ID, nenhum script do Google Analytics é carregado.
+- Foi criado `404.html` para URLs inexistentes no GitHub Pages.
+- O sitemap contém apenas URLs indexáveis/canônicas; páginas legais marcadas como `noindex` foram retiradas.
+- A home não carrega mais dezenas de logotipos de convênios hospedados por terceiros.
