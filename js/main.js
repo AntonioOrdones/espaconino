@@ -260,26 +260,17 @@
   }
 
   /* ── 12 · Consentimento (LGPD) + conteúdo de terceiros ───────────────────── */
+  // O script da Elfsight (Google Reviews + Instagram) vem fixo no HTML, como no
+  // embed oficial — os widgets aparecem por padrão, até sem JavaScript. Aqui só
+  // respeitamos a escolha de quem rejeitar, ocultando as seções de terceiros.
+  // Chave versionada (v2) para não herdar rejeições feitas durante os testes.
   {
-    const CHAVE = 'nino-consent-v3';
-    const barra = $('#cookiebar');
-    const apps = $$('.elfsight-app-23de462b-ae38-4aac-95c6-f3b2e4cb36d0, .elfsight-app-27adea07-24c9-475b-8dad-760fa3506282');
-    const gates = $$('[data-third-party-gate]');
+    const CHAVE  = 'nino-consent-v2';
+    const barra  = $('#cookiebar');
+    const secoes = ['#depoimentos', '#instagram'].map(sel => $(sel)).filter(Boolean);
 
-    const aplicar = escolha => {
-      const permitido = escolha === 'all';
-      gates.forEach(g => { g.hidden = permitido; });
-      apps.forEach(app => { app.hidden = !permitido; });
-      if (permitido) {
-        carregarElfsight().catch(() => {
-          gates.forEach(g => { g.hidden = false; });
-          apps.forEach(app => { app.hidden = true; });
-        });
-        carregarGA4();
-      } else if (typeof window.gtag === 'function') {
-        window.gtag('consent', 'update', { analytics_storage: 'denied' });
-      }
-    };
+    const aplicar = escolha =>
+      secoes.forEach(sec => sec.toggleAttribute('hidden', escolha === 'essential'));
 
     const decidir = escolha => {
       gravarPref(CHAVE, escolha);
@@ -288,13 +279,16 @@
     };
 
     const salvo = lerPref(CHAVE);
-    aplicar(salvo || 'essential');
+    aplicar(salvo || 'all');
     if (!salvo) barra?.removeAttribute('hidden');
 
-    $('#ck-todos')?.addEventListener('click', () => decidir('all'));
+    $('#ck-todos')     ?.addEventListener('click', () => decidir('all'));
     $('#ck-essenciais')?.addEventListener('click', () => decidir('essential'));
-    $$('[data-consent-enable]').forEach(b => b.addEventListener('click', () => decidir('all')));
-    $$('[data-cookie-prefs]').forEach(b => b.addEventListener('click', () => barra?.removeAttribute('hidden')));
+
+    // Revogação sempre disponível: “Cookies”, no rodapé, reabre o aviso
+    $$('[data-cookie-prefs]').forEach(b =>
+      b.addEventListener('click', () => barra?.removeAttribute('hidden'))
+    );
   }
 
   /* ── 13 · Galeria: lightbox ──────────────────────────────────────────────── */
