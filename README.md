@@ -57,7 +57,7 @@ sass --watch scss/main.scss css/main.css              # durante o trabalho
 
 ## Recursos implementados
 
-Equipe (cards com registro e redes) · galeria com lightbox (fotos + vídeo) ·
+Equipe (cards com nome, profissão, registro e fotos) · galeria com lightbox (fotos + vídeo) ·
 consulta pesquisável de 51 convênios em HTML, sem carregar dezenas de logos externos ·
 chatbot **Nino** (roteiro local: especialidades, convênio, endereço, horários,
 valores, agendamento em 2 passos → WhatsApp) · feedback via diálogo → WhatsApp ·
@@ -78,8 +78,7 @@ cd espaco-nino && python3 -m http.server 8080   # depois abra http://localhost:8
 
 ## Pendências antes de publicar
 
-- [ ] **Equipe:** substituir os 4 perfis fictícios (comentário `EXEMPLO` no HTML)
-      por nome, foto, registro e redes reais.
+- [x] **Equipe:** os perfis fictícios foram substituídos pelos sete profissionais informados pela clínica. Seis fotos oficiais estão hospedadas localmente; a foto de Beatriz Mares permanece pendente.
 - [ ] **Galeria:** trocar fotos/vídeo ilustrativos (comentário `SUBSTITUIR`)
       por registros reais do espaço.
 - [ ] **Blog:** confirmar a URL do Blogger (busque `TODO` no `index.html`).

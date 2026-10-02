@@ -82,3 +82,12 @@ Os arquivos `main.css` e `main.js` existentes na raiz são, na realidade, arquiv
 - Corrigido o sitemap para listar apenas URLs indexáveis e incluídas as novas páginas.
 - Criado `404.html` personalizado.
 - Adicionada política de referrer nas principais páginas indexáveis e na Política de Privacidade.
+
+
+## Equipe oficial (02/10/2026)
+
+- Removidos os quatro perfis fictícios e as imagens externas do Random User.
+- Inseridos sete profissionais com nomes, funções e registros fornecidos pela clínica.
+- Seis fotos oficiais foram otimizadas para WebP e hospedadas localmente em `assets/equipe/`.
+- Beatriz Mares permanece com um marcador neutro “Foto em breve” até o envio da fotografia oficial.
+- A grade da equipe foi ajustada para sete cards com comportamento responsivo em desktop, tablet e celular.
