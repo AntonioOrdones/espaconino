@@ -261,7 +261,7 @@
 
   /* ── 12 · Consentimento (LGPD) + conteúdo de terceiros ───────────────────── */
   // O script da Elfsight (Google Reviews + Instagram) vem fixo no HTML, como no
-  // embed oficial — os widgets aparecem por padrão, até sem JavaScript. Aqui só
+  // embed oficial: os widgets aparecem por padrão, até sem JavaScript. Aqui só
   // respeitamos a escolha de quem rejeitar, ocultando as seções de terceiros.
   // Chave versionada (v2) para não herdar rejeições feitas durante os testes.
   {
@@ -362,13 +362,13 @@
           aviso.textContent = 'Pronto! Confira sua caixa de entrada para confirmar. ✓';
           formBoletim.reset();
         } catch {
-          aviso.textContent = 'Não foi possível assinar agora — tente pelo WhatsApp.';
+          aviso.textContent = 'Não foi possível assinar agora. Tente pelo WhatsApp.';
         }
       } else {
         // Sem serviço de e‑mail configurado: o pedido chega pelo WhatsApp da clínica.
         const texto = `Olá! Quero assinar o boletim do Espaço Niño. Meu e‑mail: ${email}`;
         window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`, '_blank', 'noopener');
-        aviso.textContent = 'Pedido enviado pelo WhatsApp — em breve você recebe a confirmação. ✓';
+        aviso.textContent = 'Pedido enviado pelo WhatsApp. Em breve você recebe a confirmação. ✓';
         formBoletim.reset();
       }
     });
@@ -446,7 +446,7 @@
     const concluirAgendamento = faixa => {
       const texto = `Olá! Quero agendar uma avaliação no Espaço Niño. Nome: ${fluxo.nome} · Idade: ${faixa}.`;
       falar(faixa, 'user');
-      falar(`Perfeito! Já deixei a mensagem pronta — é só tocar para abrir a conversa: ${linkWa(texto, 'abrir o WhatsApp da clínica')}. A equipe responde de segunda a sexta, das 8h às 18h.`);
+      falar(`Perfeito! Já deixei a mensagem pronta. É só tocar para abrir a conversa: ${linkWa(texto, 'abrir o WhatsApp da clínica')}. A equipe responde de segunda a sexta, das 8h às 18h.`);
       fluxo = null;
       MENU();
     };
@@ -462,7 +462,7 @@
         const lista = achados.slice(0, 4).map(c => `<strong>${esc(c)}</strong>`).join(', ');
         falar(`Boa notícia: atendemos ${lista} ✓ Você confere a lista completa em <a href="#convenios">Convênios</a>. Quer já ${linkWa(`Olá! Tenho o convênio ${achados[0]} e gostaria de agendar uma avaliação.`, 'agendar pelo WhatsApp')}?`);
       } else {
-        falar(`Não encontrei esse nome na lista — mas ela muda com frequência. Vale conferir em <a href="#convenios">Convênios</a> ou ${linkWa('Olá! Meu convênio não está na lista do site. Vocês atendem ' , 'confirmar direto no WhatsApp')}. Também atendemos particular, com recibo para reembolso.`);
+        falar(`Não encontrei esse nome na lista. Mas ela muda com frequência. Vale conferir em <a href="#convenios">Convênios</a> ou ${linkWa('Olá! Meu convênio não está na lista do site. Vocês atendem ' , 'confirmar direto no WhatsApp')}. Também atendemos particular, com recibo para reembolso.`);
       }
       MENU();
     };
@@ -484,14 +484,14 @@
       if (/(agendar|agendamento|marcar|consulta|avaliacao|vaga)/.test(t)) { iniciarAgendamento(); return; }
 
       if (/(especialidade|terapia|fono|psicolog|ocupacional|psicoped|psicomotr|fisioter|denver|aba\b|tea\b|autis|tdah)/.test(t)) {
-        falar('Trabalhamos com <strong>6 especialidades integradas</strong>: Psicologia (Denver e ABA), Fonoaudiologia, Terapia Ocupacional, Psicopedagogia, Psicomotricidade e Fisioterapia — sempre com plano individual e reavaliações. Veja os detalhes em <a href="servicos/">Serviços</a> e o passo a passo em <a href="#jornada">Como funciona</a>.');
+        falar('Trabalhamos com <strong>6 especialidades integradas</strong>: Psicologia (Denver e ABA), Fonoaudiologia, Terapia Ocupacional, Psicopedagogia, Psicomotricidade e Fisioterapia, com plano individual e reavaliações. Veja os detalhes em <a href="servicos/">Serviços</a> e o passo a passo em <a href="#jornada">Como funciona</a>.');
         MENU(); return;
       }
 
       if (/(convenio|plano de saude|plano\b|cobertura|reembolso)/.test(t) && t.split(' ').length <= 3) {
         fluxo = { etapa: 'convenio' };
         falar('Atendemos <strong>51 convênios</strong> + particular. Me diga o nome do seu plano que eu confiro aqui na lista 😉');
-        opcoes([{ t: 'Ver a lista completa', a: () => { fluxo = null; falar('Aqui: <a href="#convenios">lista de convênios</a> — dá para buscar pelo nome.'); MENU(); } }]);
+        opcoes([{ t: 'Ver a lista completa', a: () => { fluxo = null; falar('Aqui: <a href="#convenios">lista de convênios</a>. Dá para buscar pelo nome.'); MENU(); } }]);
         return;
       }
       if (/(unimed|amil|bradesco|sulamerica|cassi|geap|ipe|saude caixa|petrobras|postal|serpro|fusex|gdf|brb|conab|embrapa|codevasf|allianz|omint|notredame|intermedica|care plus|capesesp|bacen|fascal|fapes|proasa|pmdf|planassiste|evida|e-vida|inas|trt|tre|tst|stf|stm|mpu|senado|camara|tjdft|trf|afeb|affego|asete|caeme|caesan|cbhpm|ceam|cnti|gama saude|gravia|life|luminar|real grandeza|samp|sis\b|unafisco|sindifisco|vtrp)/.test(t)) {
@@ -499,17 +499,17 @@
       }
 
       if (/(endereco|onde|local|chegar|fica|mapa|estacionamento|aguas claras)/.test(t)) {
-        falar(`Estamos na <strong>Av. Pau Brasil, 10 · Sala 1101</strong>, Edifício Le Quartier, Águas Claras — Brasília/DF. <a href="${MAPS}" target="_blank" rel="noopener">Abrir no Google Maps</a>. O prédio tem estacionamento e acesso acessível.`);
+        falar(`Estamos na <strong>Av. Pau Brasil, 10 · Sala 1101</strong>, Edifício Le Quartier, Águas Claras, Brasília/DF. <a href="${MAPS}" target="_blank" rel="noopener">Abrir no Google Maps</a>. O prédio tem estacionamento e acesso acessível.`);
         MENU(); return;
       }
 
       if (/(horario|funciona|abre|fecha|atendem|que horas)/.test(t)) {
-        falar('Atendemos de <strong>segunda a sexta, das 8h às 18h</strong>. O primeiro contato pode ser a qualquer hora pelo WhatsApp — a equipe responde no horário comercial.');
+        falar('Atendemos de <strong>segunda a sexta, das 8h às 18h</strong>. O primeiro contato pode ser a qualquer hora pelo WhatsApp. A equipe responde no horário comercial.');
         MENU(); return;
       }
 
       if (/(preco|valor|custa|quanto|particular|sessao)/.test(t)) {
-        falar(`Os valores variam conforme a especialidade e o plano terapêutico — por isso a equipe faz um orçamento personalizado, sem compromisso. ${linkWa('Olá! Gostaria de saber os valores das terapias no Espaço Niño.', 'Pedir valores no WhatsApp')}. Atendemos convênios e particular com recibo.`);
+        falar(`Os valores variam conforme a especialidade e o plano terapêutico. Por isso a equipe faz um orçamento personalizado, sem compromisso. ${linkWa('Olá! Gostaria de saber os valores das terapias no Espaço Niño.', 'Pedir valores no WhatsApp')}. Atendemos convênios e particular com recibo.`);
         MENU(); return;
       }
 
@@ -525,16 +525,16 @@
       }
 
       if (/(blog|artigo|conteudo|texto)/.test(t)) {
-        falar('Nossos conteúdos ficam no <a href="https://espaconinoterapias.blogspot.com" target="_blank" rel="noopener">blog do Espaço Niño</a> — dicas, rotinas e novidades da equipe.');
+        falar('Nossos conteúdos ficam no <a href="https://espaconinoterapias.blogspot.com" target="_blank" rel="noopener">blog do Espaço Niño</a>, com dicas, rotinas e novidades da equipe.');
         MENU(); return;
       }
 
       if (/(humano|atendente|pessoa|whatsapp|zap|falar|contato|telefone)/.test(t)) {
-        falar(`Claro! ${linkWa('Olá! Vim pelo site do Espaço Niño e gostaria de falar com a equipe.', 'Tocar aqui para abrir o WhatsApp')} — ou ligue para <strong>(61) 99155‑7014</strong>.`);
+        falar(`Claro! ${linkWa('Olá! Vim pelo site do Espaço Niño e gostaria de falar com a equipe.', 'Tocar aqui para abrir o WhatsApp')}. Você também pode ligar para <strong>(61) 99155‑7014</strong>.`);
         MENU(); return;
       }
 
-      falar('Hmm, essa eu ainda não sei responder 😅 Mas posso te mostrar o caminho: escolha uma opção abaixo ou pergunte de outro jeito — ou fale direto com a equipe no WhatsApp.');
+      falar('Hmm, essa eu ainda não sei responder 😅 Mas posso te mostrar o caminho: escolha uma opção abaixo ou pergunte de outro jeito. Você também pode falar direto com a equipe no WhatsApp.');
       MENU();
     };
 
