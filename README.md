@@ -81,7 +81,6 @@ cd espaco-nino && python3 -m http.server 8080   # depois abra http://localhost:8
 - [x] **Equipe:** os perfis fictícios foram substituídos pelos sete profissionais informados pela clínica. Seis fotos oficiais estão hospedadas localmente; a foto de Beatriz Mares permanece pendente.
 - [ ] **Galeria:** trocar fotos/vídeo ilustrativos (comentário `SUBSTITUIR`)
       por registros reais do espaço.
-- [ ] **Blog:** confirmar a URL do Blogger (busque `TODO` no `index.html`).
 - [ ] **Boletim:** configurar o provedor de e‑mail em `data-endpoint`.
 - [ ] **CNPJ** no rodapé e na Política de Privacidade; **e‑mail do DPO** nas
       páginas de Privacidade e LGPD.

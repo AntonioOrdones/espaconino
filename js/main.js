@@ -524,11 +524,6 @@
         MENU(); return;
       }
 
-      if (/(blog|artigo|conteudo|texto)/.test(t)) {
-        falar('Nossos conteúdos ficam no <a href="https://espaconinoterapias.blogspot.com" target="_blank" rel="noopener">blog do Espaço Niño</a>, com dicas, rotinas e novidades da equipe.');
-        MENU(); return;
-      }
-
       if (/(humano|atendente|pessoa|whatsapp|zap|falar|contato|telefone)/.test(t)) {
         falar(`Claro! ${linkWa('Olá! Vim pelo site do Espaço Niño e gostaria de falar com a equipe.', 'Tocar aqui para abrir o WhatsApp')}. Você também pode ligar para <strong>(61) 99155‑7014</strong>.`);
         MENU(); return;
