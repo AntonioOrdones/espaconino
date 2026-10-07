@@ -1,0 +1,64 @@
+name: Atualizar conteúdo
+description: Solicite alteração de texto, profissional, convênio, foto ou dado institucional
+title: "[Conteúdo] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use somente informações aprovadas. Não envie dados de pacientes ou documentos sensíveis.
+
+  - type: input
+    id: page
+    attributes:
+      label: Página ou seção
+      placeholder: Home > Equipe
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Tipo de atualização
+      options:
+        - Profissional/equipe
+        - Serviço
+        - Convênio
+        - Endereço/telefone/horário
+        - Foto/imagem
+        - Texto institucional
+        - Política legal
+        - SEO/metadados
+        - Outro
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Conteúdo atual
+      description: Cole apenas o trecho necessário, sem dados sensíveis.
+
+  - type: textarea
+    id: requested
+    attributes:
+      label: Conteúdo solicitado
+    validations:
+      required: true
+
+  - type: textarea
+    id: source
+    attributes:
+      label: Fonte ou aprovação
+      description: Informe quem confirmou o dado ou qual documento institucional o sustenta.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmações
+      options:
+        - label: A solicitação não contém dados de pacientes ou informação sensível.
+          required: true
+        - label: Tenho autorização para solicitar/publicar esta alteração.
+          required: true

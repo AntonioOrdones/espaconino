@@ -1,0 +1,22 @@
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editores
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Ferramentas e caches
+node_modules/
+.sass-cache/
+.cache/
+__pycache__/
+*.pyc
+*.log
+
+# Arquivos temporários
+*.tmp
+*.bak
+*~

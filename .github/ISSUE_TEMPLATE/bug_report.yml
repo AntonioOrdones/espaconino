@@ -1,0 +1,55 @@
+name: Relatar problema
+description: Registre um erro visual, funcional, de link ou de conteúdo
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Não inclua dados de pacientes, prontuários, senhas ou informações sensíveis.
+
+  - type: input
+    id: page
+    attributes:
+      label: Página
+      description: Informe a URL ou o caminho do arquivo.
+      placeholder: https://antonioordones.github.io/espaconino/servicos/fonoaudiologia/
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema
+      description: O que aconteceu?
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamento esperado
+      description: O que deveria acontecer?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Como reproduzir
+      description: Informe os passos, navegador e dispositivo quando forem relevantes.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área
+      options:
+        - Conteúdo
+        - Layout/responsividade
+        - Navegação/link
+        - Acessibilidade
+        - SEO
+        - Formulário/WhatsApp
+        - Integração externa
+        - Outro
+    validations:
+      required: true

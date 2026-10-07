@@ -1,0 +1,27 @@
+name: Quality checks
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-static-site:
+    name: Validate static site
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate HTML references, metadata, JSON-LD and sitemap
+        run: python3 scripts/check_site.py

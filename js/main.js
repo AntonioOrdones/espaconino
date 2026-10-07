@@ -1,6 +1,8 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    ESPAÇO NIÑO · Comportamentos da página
    Vanilla JS (ES6+), sem dependências externas.
+   Manutenção: consulte docs/MAINTENANCE.md e docs/PRIVACY-INTEGRATIONS.md.
+   Configurações neste arquivo são públicas. Nunca armazene segredos no front-end.
    ═══════════════════════════════════════════════════════════════════════════ */
 (() => {
   'use strict';
@@ -8,6 +10,7 @@
   const $  = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
+  // Configurações públicas compartilhadas pelo site.
   const WHATSAPP = '5561991557014';
   const GA4_ID = ''; // Preencha com G-XXXXXXXXXX quando a propriedade GA4 estiver criada.
   const reduzirMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -260,9 +263,9 @@
   }
 
   /* ── 12 · Consentimento (LGPD) + conteúdo de terceiros ───────────────────── */
-  // O script da Elfsight (Google Reviews + Instagram) vem fixo no HTML, como no
-  // embed oficial: os widgets aparecem por padrão, até sem JavaScript. Aqui só
-  // respeitamos a escolha de quem rejeitar, ocultando as seções de terceiros.
+  // A home carrega o script da Elfsight diretamente no HTML. A escolha abaixo
+  // controla a visibilidade dos painéis, mas não bloqueia a requisição inicial.
+  // Veja docs/PRIVACY-INTEGRATIONS.md antes de alterar a estratégia de consentimento.
   // Chave versionada (v2) para não herdar rejeições feitas durante os testes.
   {
     const CHAVE  = 'nino-consent-v2';

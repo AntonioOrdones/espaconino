@@ -1,138 +1,146 @@
-# Espaço Niño — Site institucional
+# Espaço Niño | site institucional
 
-Site do **Espaço Niño · Centro de Terapias Multiprofissionais** (Águas Claras,
-Brasília‑DF), construído com HTML5, Sass/CSS e JavaScript puro — sem frameworks
-e sem dependências em tempo de execução.
+Site institucional do **Espaço Niño, Centro de Terapias Multiprofissionais**, em Águas Claras, Brasília/DF.
 
----
+**Produção:** https://antonioordones.github.io/espaconino/
 
-## Estrutura
+Este repositório contém um site estático em HTML5, Sass/CSS e JavaScript puro. Não há framework de front-end, backend ou banco de dados no projeto publicado.
 
+## Comece por aqui
+
+Para manutenção do site, use estes documentos:
+
+- [Documentação do projeto](docs/README.md)
+- [Arquitetura](docs/ARCHITECTURE.md)
+- [Guia de manutenção](docs/MAINTENANCE.md)
+- [Publicação e rollback](docs/DEPLOYMENT.md)
+- [SEO e acessibilidade](docs/SEO-ACCESSIBILITY.md)
+- [Privacidade e integrações](docs/PRIVACY-INTEGRATIONS.md)
+- [Guia de conteúdo](docs/CONTENT-GUIDE.md)
+- [Checklist de publicação](docs/RELEASE-CHECKLIST.md)
+- [Como contribuir](CONTRIBUTING.md)
+- [Histórico de mudanças](CHANGELOG.md)
+
+## Estrutura do repositório
+
+```text
+espaconino/
+├── index.html
+├── 404.html
+├── acessibilidade.html
+├── lgpd.html
+├── privacidade.html
+├── termos.html
+├── convenios/
+│   └── index.html
+├── servicos/
+│   ├── index.html
+│   ├── avaliacao-inicial/
+│   ├── fisioterapia/
+│   ├── fonoaudiologia/
+│   ├── psicologia-infantil/
+│   ├── psicomotricidade/
+│   ├── psicopedagogia/
+│   └── terapia-ocupacional/
+├── assets/
+│   ├── equipe/
+│   └── espaco/
+├── scss/
+│   └── main.scss
+├── css/
+│   └── main.css
+├── js/
+│   └── main.js
+├── scripts/
+│   └── check_site.py
+├── docs/
+├── .github/
+├── sitemap.xml
+└── robots.txt
 ```
-espaco-nino/
-├── index.html               ← página principal
-├── privacidade.html         ← Política de Privacidade
-├── termos.html              ← Termos de Uso
-├── lgpd.html                ← Canal LGPD
-├── acessibilidade.html      ← Declaração de Acessibilidade
-├── scss/main.scss           ← fonte dos estilos (editar aqui)
-├── css/main.css             ← compilado (não editar à mão)
-├── js/main.js               ← todos os comportamentos
-└── assets/                  ← logos oficiais, favicon, QR do WhatsApp
-```
 
-**`espaco-nino-standalone.html`** (fora da pasta) é a home em arquivo único
-(CSS/JS/imagens embutidos) para testes rápidos — os links das páginas legais
-só funcionam na versão completa.
+### Arquivos que são fonte de verdade
 
-## Estilos
+- **Estilos:** edite `scss/main.scss`. O arquivo `css/main.css` é o CSS compilado que vai para produção.
+- **Comportamentos:** edite `js/main.js`.
+- **Conteúdo da home:** edite `index.html`.
+- **Páginas de serviços:** edite os arquivos `servicos/*/index.html`.
+- **Convênios:** a lista pesquisável existe na home e em `convenios/index.html`. A home também contém o carrossel visual de logotipos.
+- **Imagens da equipe e do espaço:** ficam em `assets/equipe/` e `assets/espaco/`.
+
+## Desenvolvimento local
+
+O site pode ser servido por qualquer servidor HTTP simples.
 
 ```bash
-npm install -g sass                                   # uma vez
-sass scss/main.scss css/main.css --style=compressed --no-source-map
-sass --watch scss/main.scss css/main.css              # durante o trabalho
+python3 -m http.server 8080
 ```
 
-### Tipografia da marca
-- **Garet** é a primeira opção da pilha (`--font-sans`). O site já declara
-  `@font-face` com `local()` — quem tiver a fonte instalada a verá. Para servir
-  a fonte no site: coloque `Garet-Book.woff2` e `Garet-Heavy.woff2` em
-  `assets/fonts/` e descomente as linhas `url()` no bloco 23 do SCSS.
-  Sem ela, o fallback é a Plus Jakarta Sans (geometria muito próxima).
-- **Big Shoulders Display** (2ª fonte da marca, via Google Fonts) aparece com
-  moderação: eyebrows, marquee, numeração das etapas e títulos do rodapé.
-- Fraunces segue como serifada de display dos títulos grandes.
+Depois acesse `http://localhost:8080`.
 
-## Privacidade e consentimento (LGPD)
-
-- O site **não coleta nem armazena dados**: formulários montam a mensagem e
-  abrem o WhatsApp.
-- Preferências (cookies, contraste, tamanho de fonte) ficam no `localStorage`
-  do visitante.
-- **Widgets de terceiros:** avaliações do Google e feed do Instagram (Elfsight)
-  só são carregados depois que o visitante autoriza conteúdo de terceiros.
-  Quem mantiver apenas o essencial não faz a chamada ao Elfsight. A preferência
-  pode ser revista pelo botão “Cookies” do rodapé. O mapa continua click-to-load;
-  o VLibras (gov.br) carrega sempre, por ser recurso público de acessibilidade.
-
-## Recursos implementados
-
-Equipe (cards com nome, profissão, registro e fotos) · galeria com lightbox (fotos + vídeo) ·
-consulta pesquisável de 51 convênios em HTML, sem carregar dezenas de logos externos ·
-chatbot **Nino** (roteiro local: especialidades, convênio, endereço, horários,
-valores, agendamento em 2 passos → WhatsApp) · feedback via diálogo → WhatsApp ·
-boletim (aponte `data-endpoint` do `#form-boletim` para Mailchimp/Brevo; sem
-endpoint, o pedido chega por WhatsApp) · Trabalhe conosco · botão voltar ao topo ·
-A−/A+/alto contraste · VLibras · aviso de cookies sem dark pattern.
-
-## Como testar direito
-
-Os plugins externos — **VLibras** e **Elfsight** — exigem origem `http(s)` e
-não iniciam abrindo o arquivo direto do disco (`file://`). Para testar tudo:
+Para editar estilos:
 
 ```bash
-cd espaco-nino && python3 -m http.server 8080   # depois abra http://localhost:8080
+npx sass scss/main.scss css/main.css --style=compressed --no-source-map
 ```
 
-(ou `npx serve`, ou publique num host). O restante do site funciona até em `file://`.
+Durante o trabalho:
 
-## Pendências antes de publicar
+```bash
+npx sass --watch scss/main.scss:css/main.css --style=compressed --no-source-map
+```
 
-- [x] **Equipe:** os perfis fictícios foram substituídos pelos sete profissionais informados pela clínica. Seis fotos oficiais estão hospedadas localmente; a foto de Beatriz Mares permanece pendente.
-- [ ] **Galeria:** trocar fotos/vídeo ilustrativos (comentário `SUBSTITUIR`)
-      por registros reais do espaço.
-- [ ] **Boletim:** configurar o provedor de e‑mail em `data-endpoint`.
-- [ ] **CNPJ** no rodapé e na Política de Privacidade; **e‑mail do DPO** nas
-      páginas de Privacidade e LGPD.
-- [x] **Convênios:** a home deixou de carregar dezenas de logos externos;
-      a consulta textual permanece e ganhou página própria em `/convenios/`.
-- [ ] **Elfsight:** os widgets usam os IDs oficiais já fornecidos — basta manter
-      os apps ativos no painel da Elfsight.
+Antes de enviar uma alteração:
 
+```bash
+python3 scripts/check_site.py
+```
 
-## Arquitetura de serviços e SEO local (30/09/2026)
+O mesmo verificador roda automaticamente no GitHub Actions em pushes e pull requests.
 
-Foram adicionadas páginas HTML indexáveis e com conteúdo próprio para:
+## Regras de manutenção
 
-- `/servicos/avaliacao-inicial/`
-- `/servicos/terapia-ocupacional/`
-- `/servicos/fonoaudiologia/`
-- `/servicos/psicologia-infantil/`
-- `/servicos/psicopedagogia/`
-- `/servicos/psicomotricidade/`
-- `/servicos/fisioterapia/`
-- `/servicos/` como página-hub.
-- `/convenios/` como página pesquisável de convênios e orientações.
+1. Não edite `css/main.css` manualmente. Altere o SCSS e gere o CSS novamente.
+2. Não coloque senhas, tokens, chaves privadas ou dados pessoais de pacientes no repositório.
+3. Preserve URLs públicas já indexadas. Mudanças de rota precisam de avaliação de SEO e redirecionamento quando houver infraestrutura para isso.
+4. Ao criar ou alterar uma página indexável, revise `title`, meta description, canonical, Open Graph, JSON-LD, links internos e `sitemap.xml`.
+5. Fotos devem ter autorização de uso, nome de arquivo descritivo, texto alternativo adequado e tamanho otimizado.
+6. Dados profissionais, registros e informações clínicas devem vir de fonte aprovada pela clínica.
+7. Mudanças na `main` são mudanças de produção. Para trabalho em equipe, prefira branch e pull request.
 
-Cada página possui `title`, `meta description`, canonical, Open Graph, links internos,
-breadcrumbs e dados estruturados `Service` + `BreadcrumbList`. A home passou a apontar
-para essas páginas em links HTML rastreáveis; também foram incluídos `sitemap.xml` e
-`robots.txt`.
+## Funcionalidades atuais
 
-### URL canônica usada
+- home institucional responsiva;
+- páginas próprias para sete áreas/serviços e uma página-hub;
+- página própria de convênios;
+- equipe multiprofissional com oito profissionais e fotos locais;
+- galeria com fotos reais do espaço e lightbox;
+- avaliações do Google e feed do Instagram via Elfsight;
+- WhatsApp, mapa sob demanda e chatbot Nino;
+- recursos de acessibilidade, alto contraste, ajuste de fonte, movimento reduzido e VLibras;
+- políticas de Privacidade, LGPD, Termos de Uso e Acessibilidade;
+- sitemap, robots, canonicals, Open Graph e dados estruturados;
+- instrumentação de eventos pronta para GA4.
 
-O repositório está com GitHub Pages habilitado e não possui `CNAME`; por isso, os
-canonicals e o sitemap foram configurados para:
+O blog foi retirado do projeto e não faz mais parte da arquitetura atual.
 
-`https://antonioordones.github.io/espaconino/`
+## Configurações e pendências externas
 
-Se o site passar a usar domínio próprio, substitua esse prefixo nos HTMLs e em
-`sitemap.xml`/`robots.txt` antes da publicação. Em GitHub Pages de projeto, o arquivo
-`robots.txt` fica em `/espaconino/robots.txt`; para controle de rastreamento no nível
-do host, prefira domínio próprio ou uma configuração em que `robots.txt` seja servido
-na raiz do domínio.
+Alguns itens não podem ser concluídos apenas no código:
 
-### Observação sobre a tecnologia
+- `GA4_ID` em `js/main.js` está vazio até a criação/configuração da propriedade Google Analytics;
+- CNPJ/razão social ainda precisam ser informados na Política de Privacidade e no rodapé;
+- nome e e-mail do encarregado de dados/DPO ainda precisam ser definidos;
+- o formulário de boletim não possui endpoint de e-mail configurado e usa WhatsApp como fallback;
+- Search Console, Google Business Profile e painéis do Elfsight dependem das respectivas contas externas;
+- um domínio próprio, se adotado, exige atualizar canonicals, Open Graph, JSON-LD, sitemap e robots.
 
-O código atual deste repositório é HTML5 + Sass/CSS + JavaScript puro. Não há arquivos
-React nem etapa de build React no conteúdo atualmente versionado.
+Veja os detalhes em [Privacidade e integrações](docs/PRIVACY-INTEGRATIONS.md) e [Guia de manutenção](docs/MAINTENANCE.md).
 
+## Publicação
 
-## Privacidade, medição e robustez (30/09/2026)
+A produção usa GitHub Pages a partir da branch `main`. O fluxo completo, incluindo verificação do deploy, cache e rollback, está em [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
-- Elfsight (Google Reviews e Instagram) não é mais carregado antes da escolha do visitante. O script é injetado somente após consentimento.
-- Foi adicionada instrumentação para os eventos `click_whatsapp`, `click_phone`, `click_map`, `service_cta_click`, `insurance_search`, `form_start`, `form_submit` e `generate_lead`.
-- Para ativar GA4, preencha `GA4_ID` no início de `js/main.js` com o Measurement ID da propriedade (`G-...`). Sem ID, nenhum script do Google Analytics é carregado.
-- Foi criado `404.html` para URLs inexistentes no GitHub Pages.
-- O sitemap contém apenas URLs indexáveis/canônicas; páginas legais marcadas como `noindex` foram retiradas.
-- A home não carrega mais dezenas de logotipos de convênios hospedados por terceiros.
+## Licenciamento
+
+O repositório não possui licença de software definida. Não adicione uma licença sem decisão dos responsáveis pelo projeto.
