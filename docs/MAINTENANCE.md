@@ -188,7 +188,8 @@ A descoberta das páginas usa `sitemap.xml`. Portanto:
 - páginas legais ou não indexáveis que precisem aparecer nos resultados devem ser incluídas em `legalPages` no módulo de busca de `js/main.js`;
 - o texto pesquisável vem do conteúdo de `<main>`;
 - seções com `id` e título podem aparecer como resultados diretos com âncora;
-- o índice fica somente em `sessionStorage`, sem enviar termos de pesquisa a serviço externo.
+- o índice fica somente em `sessionStorage`, sem enviar termos de pesquisa a serviço externo;
+- cada resultado acrescenta o parâmetro `busca` à URL para que a página de destino localize, destaque e role até a ocorrência pesquisada.
 
 Ao alterar a busca, teste pelo menos:
 

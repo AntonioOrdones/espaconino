@@ -629,7 +629,7 @@
     let lastSearch = '';
 
     const cleanText = text => (text || '').replace(/\s+/g, ' ').trim();
-    const searchKey = 'ninoSiteSearchIndexV2';
+    const searchKey = 'ninoSiteSearchIndexV3';
 
     const pageTitle = doc => {
       const heading = $('h1', doc);
@@ -745,6 +745,162 @@
       return score;
     };
 
+    const searchTerms = query => {
+      const phrase = normalizar(query).trim();
+      const terms = phrase.split(/\s+/).filter(term => term.length >= 2);
+      return [...new Set([phrase, ...terms].filter(Boolean))].sort((a, b) => b.length - a.length);
+    };
+
+    const firstMatch = (text, query) => {
+      const haystack = normalizar(text);
+      for (const term of searchTerms(query)) {
+        const index = haystack.indexOf(term);
+        if (index !== -1) return { index, length: term.length };
+      }
+      return { index: -1, length: 0 };
+    };
+
+    const excerptFor = (text, query, before = 72, after = 108) => {
+      const clean = cleanText(text);
+      const match = firstMatch(clean, query);
+      if (match.index === -1) return clean.slice(0, 180);
+
+      let start = Math.max(0, match.index - before);
+      let end = Math.min(clean.length, match.index + match.length + after);
+
+      if (start > 0) {
+        const nextSpace = clean.indexOf(' ', start);
+        if (nextSpace !== -1 && nextSpace < match.index) start = nextSpace + 1;
+      }
+      if (end < clean.length) {
+        const previousSpace = clean.lastIndexOf(' ', end);
+        if (previousSpace > match.index + match.length) end = previousSpace;
+      }
+
+      return `${start > 0 ? '…' : ''}${clean.slice(start, end)}${end < clean.length ? '…' : ''}`;
+    };
+
+    const appendHighlightedText = (element, text, query) => {
+      const normalizedText = normalizar(text);
+      const ranges = [];
+      const candidates = searchTerms(query);
+
+      candidates.forEach(term => {
+        let from = 0;
+        while (from < normalizedText.length) {
+          const index = normalizedText.indexOf(term, from);
+          if (index === -1) break;
+          const end = index + term.length;
+          const overlaps = ranges.some(range => index < range.end && end > range.start);
+          if (!overlaps) ranges.push({ start: index, end });
+          from = Math.max(end, index + 1);
+        }
+      });
+
+      if (!ranges.length) {
+        element.textContent = text;
+        return;
+      }
+
+      ranges.sort((a, b) => a.start - b.start);
+      let cursor = 0;
+      ranges.forEach(range => {
+        if (range.start > cursor) element.append(document.createTextNode(text.slice(cursor, range.start)));
+        const mark = document.createElement('mark');
+        mark.className = 'site-search__match';
+        mark.textContent = text.slice(range.start, range.end);
+        element.appendChild(mark);
+        cursor = range.end;
+      });
+      if (cursor < text.length) element.append(document.createTextNode(text.slice(cursor)));
+    };
+
+    const resultUrl = (rawUrl, query) => {
+      const url = new URL(rawUrl, document.baseURI);
+      url.searchParams.set('busca', query);
+      return url.href;
+    };
+
+    const highlightSearchDestination = () => {
+      const url = new URL(location.href);
+      const query = (url.searchParams.get('busca') || '').trim();
+      if (normalizar(query).length < 2) return;
+
+      const hashTarget = url.hash ? document.getElementById(decodeURIComponent(url.hash.slice(1))) : null;
+      const root = hashTarget || $('main') || document.body;
+      const terms = searchTerms(query);
+      const nodes = [];
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          const parent = node.parentElement;
+          const value = node.nodeValue || '';
+          if (!parent || !value.trim()) return NodeFilter.FILTER_REJECT;
+          if (parent.closest('script, style, noscript, textarea, input, select, option, svg, .site-search, [hidden]')) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          const normalized = normalizar(value);
+          return terms.some(term => normalized.includes(term))
+            ? NodeFilter.FILTER_ACCEPT
+            : NodeFilter.FILTER_REJECT;
+        }
+      });
+
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+
+      let firstMark = null;
+      let marks = 0;
+      nodes.forEach(node => {
+        if (marks >= 30 || !node.parentNode) return;
+        const text = node.nodeValue || '';
+        const normalized = normalizar(text);
+        const ranges = [];
+
+        terms.forEach(term => {
+          let from = 0;
+          while (from < normalized.length && marks + ranges.length < 30) {
+            const index = normalized.indexOf(term, from);
+            if (index === -1) break;
+            const end = index + term.length;
+            const overlaps = ranges.some(range => index < range.end && end > range.start);
+            if (!overlaps) ranges.push({ start: index, end });
+            from = Math.max(end, index + 1);
+          }
+        });
+
+        if (!ranges.length) return;
+        ranges.sort((a, b) => a.start - b.start);
+
+        const fragment = document.createDocumentFragment();
+        let cursor = 0;
+        ranges.forEach(range => {
+          if (range.start > cursor) fragment.append(document.createTextNode(text.slice(cursor, range.start)));
+          const mark = document.createElement('mark');
+          mark.className = 'site-search-target';
+          mark.textContent = text.slice(range.start, range.end);
+          fragment.appendChild(mark);
+          if (!firstMark) firstMark = mark;
+          cursor = range.end;
+          marks++;
+        });
+        if (cursor < text.length) fragment.append(document.createTextNode(text.slice(cursor)));
+        node.parentNode.replaceChild(fragment, node);
+      });
+
+      if (!firstMark && hashTarget && hashTarget !== root) return;
+      const target = firstMark || hashTarget;
+      if (target) {
+        window.setTimeout(() => {
+          target.scrollIntoView({ behavior: reduzirMovimento ? 'auto' : 'smooth', block: 'center' });
+          if (firstMark) {
+            firstMark.setAttribute('tabindex', '-1');
+            firstMark.focus({ preventScroll: true });
+          }
+        }, 120);
+      }
+    };
+
+    highlightSearchDestination();
+
     const renderSearch = async rawQuery => {
       const query = rawQuery.trim();
       lastSearch = query;
@@ -782,13 +938,14 @@
         const title = document.createElement('strong');
         const meta = document.createElement('span');
         const desc = document.createElement('span');
+        const excerpt = excerptFor(item.text || item.description, query);
 
-        a.href = item.url;
-        title.textContent = item.title;
+        a.href = resultUrl(item.url, query);
+        appendHighlightedText(title, item.title, query);
         meta.className = 'site-search__result-meta';
         meta.textContent = item.type;
         desc.className = 'site-search__result-desc';
-        desc.textContent = item.description || item.text.slice(0, 150);
+        appendHighlightedText(desc, excerpt, query);
 
         a.append(title, meta, desc);
         a.addEventListener('click', () => {
