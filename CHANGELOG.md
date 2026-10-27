@@ -4,6 +4,8 @@ Histórico das alterações relevantes do site. O projeto ainda não adota versi
 
 ## 2026-10-27
 
+- corrigida a busca global: o índice agora percorre corretamente todas as páginas e seções; removido o botão nativo duplicado de limpar do campo de pesquisa.
+
 - adicionada busca global discreta no cabeçalho, com pesquisa local em todas as páginas públicas, páginas legais e seções relevantes do site.
 
 - revisados os textos das páginas de serviços para falar diretamente da atuação das equipes, removendo referências como “no site do Espaço Niño”;

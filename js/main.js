@@ -629,7 +629,7 @@
     let lastSearch = '';
 
     const cleanText = text => (text || '').replace(/\s+/g, ' ').trim();
-    const searchKey = 'ninoSiteSearchIndexV1';
+    const searchKey = 'ninoSiteSearchIndexV2';
 
     const pageTitle = doc => {
       const heading = $('h1', doc);
@@ -662,7 +662,7 @@
           const sitemapResponse = await fetch(new URL('sitemap.xml', siteRoot), { credentials: 'same-origin' });
           if (sitemapResponse.ok) {
             const sitemap = new DOMParser().parseFromString(await sitemapResponse.text(), 'application/xml');
-            const sitemapPaths = $('loc', sitemap)
+            const sitemapPaths = $$('loc', sitemap)
               .map(node => {
                 try { return new URL(node.textContent.trim()).pathname.replace(/^\/+/, ''); }
                 catch (_) { return ''; }
@@ -682,7 +682,7 @@
           const description = $('meta[name="description"]', doc)?.content || '';
           const entries = [buildEntry(url.href, pageTitle(doc), description, main?.textContent || '')];
 
-          $('section[id]', main).forEach(section => {
+          $$('section[id]', main).forEach(section => {
             const heading = $('h2, h3', section);
             if (!heading) return;
             const sectionText = cleanText(section.textContent);
@@ -698,7 +698,25 @@
           return entries;
         }));
 
-        const index = requests.flatMap(result => result.status === 'fulfilled' ? result.value : []);
+        let index = requests.flatMap(result => result.status === 'fulfilled' ? result.value : []);
+        if (!index.length) {
+          const currentMain = $('main') || document.body;
+          const currentDescription = $('meta[name="description"]')?.content || '';
+          index = [buildEntry(location.href.split('#')[0], pageTitle(document), currentDescription, currentMain?.textContent || '')];
+          $$('section[id]', currentMain).forEach(section => {
+            const heading = $('h2, h3', section);
+            if (!heading) return;
+            const sectionText = cleanText(section.textContent);
+            if (sectionText.length < 40) return;
+            index.push(buildEntry(
+              `${location.href.split('#')[0]}#${encodeURIComponent(section.id)}`,
+              cleanText(heading.textContent),
+              currentDescription,
+              sectionText,
+              'Seção'
+            ));
+          });
+        }
         try { sessionStorage.setItem(searchKey, JSON.stringify(index)); } catch (_) {}
         return index;
       })();

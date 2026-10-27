@@ -2763,7 +2763,18 @@ html.hc {
 
 .site-search__input::placeholder { color: var(--muted); }
 
-.site-search__input::-webkit-search-cancel-button { cursor: pointer; }
+.site-search__input::-webkit-search-cancel-button {
+  display: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.site-search__input::-ms-clear,
+.site-search__input::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
 
 .site-search__close {
   display: grid;
