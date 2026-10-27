@@ -570,8 +570,263 @@
       window.setTimeout(() => responder(texto), reduzirMovimento ? 0 : 350);
     });
   }
-  /* ── 17 · Carrossel de convênios: anima só com as larguras estáveis ─────── */
+  /* ── 17 · Busca global do site ───────────────────────────────────────────── */
+  const headerInner = $('.site-header__inner');
+  if (header && headerInner) {
+    const mainScript = [...document.scripts].find(script => /\/js\/main\.js(?:\?|$)/.test(script.src));
+    const siteRoot = mainScript ? new URL('../', mainScript.src) : new URL('./', document.baseURI);
+    const legalPages = ['acessibilidade.html', 'lgpd.html', 'privacidade.html', 'termos.html'];
+    const fallbackPages = [
+      '',
+      'servicos/',
+      'servicos/avaliacao-inicial/',
+      'servicos/fisioterapia/',
+      'servicos/fonoaudiologia/',
+      'servicos/psicologia-infantil/',
+      'servicos/psicomotricidade/',
+      'servicos/psicopedagogia/',
+      'servicos/terapia-ocupacional/',
+      'convenios/',
+    ];
+
+    const searchToggle = document.createElement('button');
+    searchToggle.type = 'button';
+    searchToggle.className = 'site-search-toggle';
+    searchToggle.setAttribute('aria-label', 'Pesquisar no site');
+    searchToggle.setAttribute('aria-expanded', 'false');
+    searchToggle.setAttribute('aria-controls', 'busca-site');
+    searchToggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.2 4.2"></path></svg>';
+
+    const headerCta = $('.site-header__cta', headerInner);
+    const navToggle = $('.nav-toggle', headerInner);
+    headerInner.insertBefore(searchToggle, headerCta || navToggle || null);
+
+    const searchPanel = document.createElement('div');
+    searchPanel.className = 'site-search';
+    searchPanel.id = 'busca-site';
+    searchPanel.hidden = true;
+    searchPanel.innerHTML = `
+      <div class="container site-search__container">
+        <div class="site-search__box">
+          <form class="site-search__form" role="search" novalidate>
+            <svg class="site-search__input-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.2 4.2"></path></svg>
+            <label class="visually-hidden" for="busca-global">Pesquisar em todo o site</label>
+            <input class="site-search__input" id="busca-global" type="search" inputmode="search" autocomplete="off" enterkeyhint="search" placeholder="Pesquisar serviços, convênios, equipe..." aria-describedby="busca-global-status">
+            <button class="site-search__close" type="button" aria-label="Fechar pesquisa">×</button>
+          </form>
+          <p class="site-search__status" id="busca-global-status" aria-live="polite">Digite pelo menos 2 caracteres.</p>
+          <ul class="site-search__results" aria-label="Resultados da pesquisa"></ul>
+        </div>
+      </div>`;
+    header.appendChild(searchPanel);
+
+    const searchForm = $('.site-search__form', searchPanel);
+    const searchInput = $('.site-search__input', searchPanel);
+    const searchClose = $('.site-search__close', searchPanel);
+    const searchStatus = $('.site-search__status', searchPanel);
+    const searchResults = $('.site-search__results', searchPanel);
+    let searchIndexPromise;
+    let lastSearch = '';
+
+    const cleanText = text => (text || '').replace(/\s+/g, ' ').trim();
+    const searchKey = 'ninoSiteSearchIndexV1';
+
+    const pageTitle = doc => {
+      const heading = $('h1', doc);
+      const raw = cleanText(heading?.textContent || doc.title || 'Espaço Niño');
+      return raw.replace(/\s*[|·]\s*Espaço Niño.*$/i, '').trim();
+    };
+
+    const buildEntry = (url, title, description, text, type = 'Página') => ({
+      url,
+      title: cleanText(title),
+      description: cleanText(description),
+      text: cleanText(text).slice(0, 18000),
+      type,
+    });
+
+    const loadSearchIndex = async () => {
+      if (searchIndexPromise) return searchIndexPromise;
+
+      searchIndexPromise = (async () => {
+        try {
+          const cached = sessionStorage.getItem(searchKey);
+          if (cached) {
+            const parsed = JSON.parse(cached);
+            if (Array.isArray(parsed) && parsed.length) return parsed;
+          }
+        } catch (_) {}
+
+        let paths = [...fallbackPages];
+        try {
+          const sitemapResponse = await fetch(new URL('sitemap.xml', siteRoot), { credentials: 'same-origin' });
+          if (sitemapResponse.ok) {
+            const sitemap = new DOMParser().parseFromString(await sitemapResponse.text(), 'application/xml');
+            const sitemapPaths = $('loc', sitemap)
+              .map(node => {
+                try { return new URL(node.textContent.trim()).pathname.replace(/^\/+/, ''); }
+                catch (_) { return ''; }
+              })
+              .filter(Boolean);
+            paths = [...new Set([...sitemapPaths, ...fallbackPages])];
+          }
+        } catch (_) {}
+
+        paths = [...new Set([...paths, ...legalPages])];
+        const requests = await Promise.allSettled(paths.map(async path => {
+          const url = new URL(path, siteRoot);
+          const response = await fetch(url, { credentials: 'same-origin' });
+          if (!response.ok) throw new Error(String(response.status));
+          const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+          const main = $('main', doc) || doc.body;
+          const description = $('meta[name="description"]', doc)?.content || '';
+          const entries = [buildEntry(url.href, pageTitle(doc), description, main?.textContent || '')];
+
+          $('section[id]', main).forEach(section => {
+            const heading = $('h2, h3', section);
+            if (!heading) return;
+            const sectionText = cleanText(section.textContent);
+            if (sectionText.length < 40) return;
+            entries.push(buildEntry(
+              `${url.href.split('#')[0]}#${encodeURIComponent(section.id)}`,
+              cleanText(heading.textContent),
+              description,
+              sectionText,
+              'Seção'
+            ));
+          });
+          return entries;
+        }));
+
+        const index = requests.flatMap(result => result.status === 'fulfilled' ? result.value : []);
+        try { sessionStorage.setItem(searchKey, JSON.stringify(index)); } catch (_) {}
+        return index;
+      })();
+
+      return searchIndexPromise;
+    };
+
+    const scoreResult = (item, query) => {
+      const phrase = normalizar(query);
+      const terms = phrase.split(/\s+/).filter(term => term.length >= 2);
+      const title = normalizar(item.title);
+      const description = normalizar(item.description);
+      const text = normalizar(item.text);
+      let score = 0;
+
+      if (title.includes(phrase)) score += 60;
+      if (description.includes(phrase)) score += 32;
+      if (text.includes(phrase)) score += 18;
+
+      terms.forEach(term => {
+        if (title.includes(term)) score += 14;
+        if (description.includes(term)) score += 7;
+        if (text.includes(term)) score += 2;
+      });
+
+      return score;
+    };
+
+    const renderSearch = async rawQuery => {
+      const query = rawQuery.trim();
+      lastSearch = query;
+      searchResults.replaceChildren();
+
+      if (normalizar(query).length < 2) {
+        searchStatus.textContent = 'Digite pelo menos 2 caracteres.';
+        return;
+      }
+
+      searchStatus.textContent = 'Pesquisando no site…';
+      const index = await loadSearchIndex();
+      if (query !== lastSearch) return;
+
+      const ranked = index
+        .map(item => ({ item, score: scoreResult(item, query) }))
+        .filter(result => result.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .filter((result, position, array) =>
+          array.findIndex(other => other.item.url === result.item.url) === position
+        )
+        .slice(0, 7);
+
+      if (!ranked.length) {
+        searchStatus.textContent = `Nenhum resultado para “${query}”.`;
+        return;
+      }
+
+      searchStatus.textContent = ranked.length === 1 ? '1 resultado encontrado.' : `${ranked.length} resultados encontrados.`;
+      const fragment = document.createDocumentFragment();
+
+      ranked.forEach(({ item }) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        const title = document.createElement('strong');
+        const meta = document.createElement('span');
+        const desc = document.createElement('span');
+
+        a.href = item.url;
+        title.textContent = item.title;
+        meta.className = 'site-search__result-meta';
+        meta.textContent = item.type;
+        desc.className = 'site-search__result-desc';
+        desc.textContent = item.description || item.text.slice(0, 150);
+
+        a.append(title, meta, desc);
+        a.addEventListener('click', () => {
+          track('site_search_result_click', { query, result_url: item.url });
+          closeSearch(false);
+        });
+        li.appendChild(a);
+        fragment.appendChild(li);
+      });
+
+      searchResults.appendChild(fragment);
+    };
+
+    const openSearch = () => {
+      if (!menu.hidden) fecharMenu();
+      searchPanel.hidden = false;
+      searchToggle.setAttribute('aria-expanded', 'true');
+      window.setTimeout(() => searchInput.focus(), 0);
+      loadSearchIndex().catch(() => {});
+      track('site_search_open');
+    };
+
+    const closeSearch = (restoreFocus = true) => {
+      searchPanel.hidden = true;
+      searchToggle.setAttribute('aria-expanded', 'false');
+      if (restoreFocus) searchToggle.focus();
+    };
+
+    searchToggle.addEventListener('click', () => {
+      if (searchPanel.hidden) openSearch();
+      else closeSearch();
+    });
+    searchClose.addEventListener('click', () => closeSearch());
+    searchInput.addEventListener('input', () => renderSearch(searchInput.value));
+    searchForm.addEventListener('submit', event => {
+      event.preventDefault();
+      const first = $('a', searchResults);
+      if (first) {
+        track('site_search_submit', { query: searchInput.value.trim() });
+        first.click();
+      } else {
+        renderSearch(searchInput.value);
+      }
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !searchPanel.hidden) closeSearch();
+    });
+    document.addEventListener('click', event => {
+      if (!searchPanel.hidden && !searchPanel.contains(event.target) && !searchToggle.contains(event.target)) {
+        closeSearch(false);
+      }
+    });
+  }
+
+  /* ── 18 · Carrossel de convênios: anima só com as larguras estáveis ─────── */
   window.addEventListener('load', () =>
-    $$('.logo-wall').forEach(w => w.classList.add('is-ready'))
+    $('.logo-wall').forEach(w => w.classList.add('is-ready'))
   );
 })();

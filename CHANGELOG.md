@@ -4,6 +4,8 @@ Histórico das alterações relevantes do site. O projeto ainda não adota versi
 
 ## 2026-10-27
 
+- adicionada busca global discreta no cabeçalho, com pesquisa local em todas as páginas públicas, páginas legais e seções relevantes do site.
+
 - revisados os textos das páginas de serviços para falar diretamente da atuação das equipes, removendo referências como “no site do Espaço Niño”;
 - adotado o texto de Fonoaudiologia aprovado pela clínica;
 - padronizada a grafia “Do bebê ao adolescente” nos cards de atendimento;

@@ -116,6 +116,7 @@ O mesmo verificador roda automaticamente no GitHub Actions em pushes e pull requ
 - equipe multiprofissional com oito profissionais e fotos locais;
 - galeria com fotos reais do espaço e lightbox;
 - avaliações do Google e feed do Instagram via Elfsight;
+- busca global discreta no cabeçalho, com pesquisa em todo o conteúdo público do site;
 - WhatsApp, mapa sob demanda e chatbot Nino;
 - recursos de acessibilidade, alto contraste, ajuste de fonte, movimento reduzido e VLibras;
 - políticas de Privacidade, LGPD, Termos de Uso e Acessibilidade;

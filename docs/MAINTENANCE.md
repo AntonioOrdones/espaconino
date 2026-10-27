@@ -176,3 +176,25 @@ O formulário `#form-boletim` possui `data-endpoint=""`. Sem endpoint, o fluxo u
 Pesquise referências no repositório e confirme que nenhuma página pública depende dele. URLs publicadas podem continuar sendo acessadas por buscadores, favoritos ou links antigos.
 
 Use o checklist em [RELEASE-CHECKLIST.md](RELEASE-CHECKLIST.md).
+
+
+## Manter a busca global
+
+A lupa do cabeçalho e o painel de resultados são criados por `js/main.js`; não é necessário copiar HTML da busca para cada página.
+
+A descoberta das páginas usa `sitemap.xml`. Portanto:
+
+- uma nova página pública/indexável deve entrar no sitemap;
+- páginas legais ou não indexáveis que precisem aparecer nos resultados devem ser incluídas em `legalPages` no módulo de busca de `js/main.js`;
+- o texto pesquisável vem do conteúdo de `<main>`;
+- seções com `id` e título podem aparecer como resultados diretos com âncora;
+- o índice fica somente em `sessionStorage`, sem enviar termos de pesquisa a serviço externo.
+
+Ao alterar a busca, teste pelo menos:
+
+1. uma especialidade, como “fonoaudiologia”;
+2. um convênio, como “CBMDF”;
+3. um profissional;
+4. uma página legal, como “privacidade”;
+5. busca com e sem acentos;
+6. abertura, fechamento por Esc e navegação por teclado no celular e no desktop.

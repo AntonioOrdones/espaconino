@@ -80,7 +80,8 @@ Principais módulos internos:
 12. boletim;
 13. chatbot Nino;
 14. carrossel de convênios;
-15. analytics.
+15. analytics;
+16. busca global do site.
 
 O arquivo usa uma IIFE e `'use strict'` para reduzir vazamento de estado global.
 
@@ -134,3 +135,19 @@ As rotas atuais devem ser tratadas como públicas. Não mova páginas apenas par
 ### Sem blog
 
 O blog foi removido em outubro de 2026. Não existem rota, item de menu ou integração de blog na arquitetura atual.
+
+
+## Busca global
+
+A busca é criada por `js/main.js` em todos os cabeçalhos, sem duplicar marcação HTML em cada página.
+
+Ao ser aberta, ela:
+
+1. lê `sitemap.xml` para descobrir as páginas públicas indexáveis;
+2. acrescenta as páginas legais e de acessibilidade;
+3. carrega o conteúdo no mesmo domínio;
+4. indexa título, descrição, texto principal e seções com `id`;
+5. apresenta os resultados por relevância;
+6. guarda o índice apenas na sessão do navegador para evitar novos downloads durante a mesma navegação.
+
+Como o índice é montado a partir das páginas publicadas, alterações de texto entram automaticamente na pesquisa. Novas páginas indexáveis devem ser adicionadas ao `sitemap.xml`; páginas não indexáveis que precisem aparecer na busca devem ser adicionadas à lista `legalPages` em `js/main.js`.
