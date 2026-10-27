@@ -87,9 +87,8 @@ Os IDs de widgets presentes no HTML são identificadores públicos necessários 
 Ainda faltam dados confirmados para:
 
 - CNPJ e razão social;
-- nome e e-mail do encarregado/DPO.
 
-Esses dados aparecem como `TODO` em páginas legais para impedir que a equipe publique informação inventada.
+O e-mail público para assuntos de proteção de dados é `espaconinoterapia@gmail.com`. CNPJ e razão social continuam pendentes e não devem ser inventados.
 
 ## Regra para novas integrações
 

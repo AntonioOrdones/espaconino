@@ -113,7 +113,7 @@ Falhas nesses serviços não devem impedir a navegação básica do site. O carr
 
 As páginas públicas indexáveis usam a base:
 
-`https://antonioordones.github.io/espaconino/`
+`https://espaconino.com.br/`
 
 Se houver domínio próprio, consulte [DEPLOYMENT.md](DEPLOYMENT.md) antes da troca.
 

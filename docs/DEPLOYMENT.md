@@ -5,7 +5,7 @@
 - repositório: `AntonioOrdones/espaconino`;
 - branch de produção: `main`;
 - hospedagem: GitHub Pages;
-- URL atual: `https://antonioordones.github.io/espaconino/`.
+- URL atual: `https://espaconino.com.br/`.
 
 Um merge ou push na `main` inicia a publicação no GitHub Pages.
 
@@ -32,7 +32,7 @@ No GitHub:
 Para diferenciar cache de problema de deploy, também é possível abrir temporariamente:
 
 ```text
-https://antonioordones.github.io/espaconino/?v=<sha-do-commit>
+https://espaconino.com.br/?v=<sha-do-commit>
 ```
 
 O parâmetro serve apenas para teste. Não altere canonicals por causa dele.
@@ -51,7 +51,7 @@ Não use force push na `main` como procedimento normal de rollback.
 
 ## Domínio próprio
 
-Antes de ativar um domínio próprio:
+O domínio oficial atual é `https://espaconino.com.br/`. Se ele for alterado no futuro:
 
 - configurar o domínio no GitHub Pages;
 - criar o arquivo `CNAME`, quando aplicável;

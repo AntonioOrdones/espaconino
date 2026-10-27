@@ -25,7 +25,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE_URL = "https://antonioordones.github.io/espaconino/"
+BASE_URL = "https://espaconino.com.br/"
 
 ESSENTIAL_FILES = [
     ROOT / "index.html",

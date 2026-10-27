@@ -163,9 +163,9 @@ Nunca coloque credenciais do Google no JavaScript.
 
 A Política de Privacidade ainda possui marcador de pendência. O rodapé também precisa receber o dado institucional quando confirmado.
 
-### DPO/encarregado
+### Privacidade
 
-`privacidade.html` e `lgpd.html` ainda aguardam nome/e-mail definidos pela clínica.
+O e-mail público para assuntos de proteção de dados é `espaconinoterapia@gmail.com`. Não publique o nome de um encarregado/DPO sem confirmação formal da clínica.
 
 ### Boletim
 

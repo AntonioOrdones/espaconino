@@ -2,7 +2,7 @@
 
 Site institucional do **Espaço Niño, Centro de Terapias Multiprofissionais**, em Águas Claras, Brasília/DF.
 
-**Produção:** https://antonioordones.github.io/espaconino/
+**Produção:** https://espaconino.com.br/
 
 Este repositório contém um site estático em HTML5, Sass/CSS e JavaScript puro. Não há framework de front-end, backend ou banco de dados no projeto publicado.
 
@@ -130,10 +130,9 @@ Alguns itens não podem ser concluídos apenas no código:
 
 - `GA4_ID` em `js/main.js` está vazio até a criação/configuração da propriedade Google Analytics;
 - CNPJ/razão social ainda precisam ser informados na Política de Privacidade e no rodapé;
-- nome e e-mail do encarregado de dados/DPO ainda precisam ser definidos;
 - o formulário de boletim não possui endpoint de e-mail configurado e usa WhatsApp como fallback;
 - Search Console, Google Business Profile e painéis do Elfsight dependem das respectivas contas externas;
-- um domínio próprio, se adotado, exige atualizar canonicals, Open Graph, JSON-LD, sitemap e robots.
+- o domínio oficial em produção é `https://espaconino.com.br/`; qualquer troca futura exige revisar canonicals, Open Graph, JSON-LD, sitemap e robots.
 
 Veja os detalhes em [Privacidade e integrações](docs/PRIVACY-INTEGRATIONS.md) e [Guia de manutenção](docs/MAINTENANCE.md).
 

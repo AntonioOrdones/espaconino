@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://antonioordones.github.io/espaconino/sitemap.xml
+Sitemap: https://espaconino.com.br/sitemap.xml

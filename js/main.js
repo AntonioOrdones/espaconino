@@ -497,7 +497,7 @@
         opcoes([{ t: 'Ver a lista completa', a: () => { fluxo = null; falar('Aqui: <a href="#convenios">lista de convênios</a>. Dá para buscar pelo nome.'); MENU(); } }]);
         return;
       }
-      if (/(unimed|amil|bradesco|sulamerica|cassi|geap|ipe|saude caixa|petrobras|postal|serpro|fusex|gdf|brb|conab|embrapa|codevasf|allianz|omint|notredame|intermedica|care plus|capesesp|bacen|fascal|fapes|proasa|pmdf|planassiste|evida|e-vida|inas|trt|tre|tst|stf|stm|mpu|senado|camara|tjdft|trf|afeb|affego|asete|caeme|caesan|cbhpm|ceam|cnti|gama saude|gravia|life|luminar|real grandeza|samp|sis\b|unafisco|sindifisco|vtrp)/.test(t)) {
+      if (/(unimed|amil|bradesco|sulamerica|cassi|geap|ipe|saude caixa|petrobras|postal|serpro|fusex|gdf|brb|conab|embrapa|codevasf|allianz|omint|notredame|intermedica|care plus|capesesp|bacen|fascal|fapes|proasa|pmdf|planassiste|evida|e-vida|inas|trt|tre|tst|stf|stm|mpu|senado|camara|tjdft|trf|afeb|affego|asete|caeme|caesan|cbmdf|ceam|cnti|gama saude|gravia|life|luminar|real grandeza|samp|sis\b|unafisco|sindifisco|vtrp)/.test(t)) {
         buscarConvenio(t); return;
       }
 

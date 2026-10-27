@@ -2,6 +2,19 @@
 
 Histórico das alterações relevantes do site. O projeto ainda não adota versionamento semântico; por isso, as entradas são organizadas por data.
 
+## 2026-10-27
+
+- revisados os textos das páginas de serviços para falar diretamente da atuação das equipes, removendo referências como “no site do Espaço Niño”;
+- adotado o texto de Fonoaudiologia aprovado pela clínica;
+- padronizada a grafia “Do bebê ao adolescente” nos cards de atendimento;
+- corrigido “Espaço ABBA” para “Espaço ABA” na galeria;
+- corrigido o convênio `CBHPM` para `CBMDF` na home, página de convênios e busca do chatbot;
+- padronizada a apresentação dos conselhos e registros profissionais da equipe;
+- configurado `espaconinoterapia@gmail.com` como contato público para assuntos de proteção de dados;
+- ajustada a chamada “Acompanhe a Espaço Niño de perto” conforme solicitação da clínica;
+- atualizado o domínio canônico, sitemap, robots, dados estruturados e documentação para `https://espaconino.com.br/`.
+
+
 ## 2026-10-07
 
 ### Organização e manutenção
