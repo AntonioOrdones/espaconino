@@ -13,6 +13,7 @@ Histórico das alterações relevantes do site. O projeto ainda não adota versi
 - configurado `espaconinoterapia@gmail.com` como contato público para assuntos de proteção de dados;
 - ajustada a chamada “Acompanhe a Espaço Niño de perto” conforme solicitação da clínica;
 - atualizado o domínio canônico, sitemap, robots, dados estruturados e documentação para `https://espaconino.com.br/`.
+- adicionada a logo oficial do CBMDF ao carrossel de convênios, substituindo o placeholder textual.
 
 
 ## 2026-10-07
